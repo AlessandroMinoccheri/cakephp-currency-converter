@@ -72,6 +72,12 @@ To convert your price form your controller you need to load the plugin (view sec
 $price = $this->CurrencyConverter->convert('GBP', 'EUR', '2100,00', 1, 1);
 ```
 
+With this call you have inside variable "price" the new price converter from GBP to EUR.
+
+To get a list of currency code you can check here:
+
+[List of available currency code](http://www.xe.com/iso4217.php )
+
 ---
 #Params
 
