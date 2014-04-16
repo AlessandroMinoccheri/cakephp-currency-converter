@@ -14,6 +14,12 @@ class CurrencyConverterAppModel extends AppModel {
 				'rule'=> 'notEmpty',
 				'message'=> 'not empty field to'	
 			)
+		),
+		'rates' => array(
+			'not_empty' => array(
+				'rule'=> 'notEmpty',
+				'message'=> 'not empty field rates'	
+			)
 		)
 	);
 }
