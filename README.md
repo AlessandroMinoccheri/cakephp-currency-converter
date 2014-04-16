@@ -1,4 +1,4 @@
-codeigniter-currency-converter
+cakephp-currency-converter
 ==============================
 
 A CakePHP plugin to convert your price from a currency to another
@@ -64,6 +64,13 @@ CakePlugin::load('CurrencyConverter');
 ```
 
 If you are already using CakePlugin::loadAll();, then this is not necessary.
+
+---
+#Usage
+To convert your price form your controller you need to load the plugin (view section Enable plugin) and type something like this:
+```
+$price = $this->CurrencyConverter->convert('GBP', 'EUR', '2100,00', 1, 1);
+```
 
 ---
 #Params
