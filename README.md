@@ -78,6 +78,8 @@ To get a list of currency code you can check here:
 
 [List of available currency code](http://www.xe.com/iso4217.php )
 
+To view an example of usage you can clone this repository that I have created with this pulgin installed inside and already works:
+[Example](https://github.com/AlessandroMinoccheri/cakephp-currency-converter-example)
 ---
 #Params
 
