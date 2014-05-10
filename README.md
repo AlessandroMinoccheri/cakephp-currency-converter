@@ -80,6 +80,12 @@ To get a list of currency code you can check here:
 
 To view an example of usage you can clone this repository that I have created with this pulgin installed inside and already works:
 [Example](https://github.com/AlessandroMinoccheri/cakephp-currency-converter-example)
+
+If you have some kind of problem like this issue:
+https://github.com/AlessandroMinoccheri/cakephp-currency-converter/issues/1#issuecomment-42709382
+
+Try to give 777 to th plugin folder
+
 ---
 #Params
 
