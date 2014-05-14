@@ -16,7 +16,7 @@ User can configure in hour the time of currency rates update, if the user doesn'
 If you have set to use database, for example, user sets to update currency rates every hour, this library get the currency conversion from yahoo finance the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
 In this way reduce the request time to convert and every hour currency rates are updated.
 
-If you haven0t set to use database, instead, every time you call the library it makes a request to yahoo api and gets the actual conversion rate. This solution is great if you have not a lot of request. Instead, if you have a lot of conversion request is better to use the database configuration.
+If you haven't set to use database, instead, every time you call the library it makes a request to yahoo api and gets the actual conversion rate. This solution is great if you haven't a lot of request. Instead, if you have a lot of request  conversion is better to use the database configuration.
 
 ---
 
