@@ -21,8 +21,7 @@ class CurrencyConverterComponent extends Component {
                 $this->checkIfExistTable();
 
                 $CurrencyConverter = ClassRegistry::init('CurrencyConverter');
-                $result = $CurrencyConverter->find('all', array('conditions' => 
-                	array('from' => $from_currency, 'to' => $to_currency)));
+                $result = $CurrencyConverter->find('all', array('conditions' => array('from' => $from_currency, 'to' => $to_currency)));
 
                 foreach ($result as $row){
                     $find = 1;
@@ -42,11 +41,11 @@ class CurrencyConverterComponent extends Component {
 						    'rates' => $rate,
                             'modified' => date('Y-m-d H:i:s'),
 						));
+
 						$CurrencyConverter->save();
                     }
-                    else{
+                    else
                         $rate = $row['CurrencyConverter']['rates'];
-                    }
                 }
 
                 if($find == 0){
@@ -60,8 +59,10 @@ class CurrencyConverterComponent extends Component {
 					    'created' => date('Y-m-d H:i:s'),
                         'modified' => date('Y-m-d H:i:s'),
 					));
+
 					$CurrencyConverter->save();
                 }
+
                 $value = (double)$rate*(double)$amount;
                 return number_format((double)$value, 2, '.', '');
             }
@@ -71,9 +72,8 @@ class CurrencyConverterComponent extends Component {
                 return number_format((double)$value, 2, '.', '');
             }
         }
-        else{
+        else
             return number_format((double)$amount, 2, '.', '');
-        }
     }
 
     private function getRates($from_currency, $to_currency){
@@ -86,12 +86,12 @@ class CurrencyConverterComponent extends Component {
         }
 
         if(isset($result)){
-            $allData = explode(',',$result); /* Get all the contents to an array */
+            $allData = explode(',',$result);
             $rate = $allData[1];
         }
-        else{
+        else
             $rate = 0;
-        }
+
         return($rate);
     }
 
@@ -100,6 +100,7 @@ class CurrencyConverterComponent extends Component {
     	App::uses('ConnectionManager', 'Model');
     	$db = ConnectionManager::getDataSource('default');
 		$tables = $db->listSources();
+        
 		foreach($tables as $t){
 			if($t == 'currency_converters')
 				$find = 1;
