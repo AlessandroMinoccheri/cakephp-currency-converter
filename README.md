@@ -1,4 +1,4 @@
-cakephp-currency-converter
+cakephp-currency-converter V 1.0.0
 ==============================
 
 A CakePHP plugin to convert your price from a currency to another
