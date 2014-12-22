@@ -1,0 +1,21 @@
+{
+  "name": "AlessandroMinoccheri/cakephp-currency-converter",
+  "type": "plugin",
+  "description": "A CakePHP plugin to convert your price from a currency to another",
+  "keywords": ["cakephp", "component", "currency", "plugin", "converter", "money"],
+  "homepage": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
+  "license": "MIT",
+  "authors": [
+  {
+    "name": "Alessandro Minoccheri",
+    "email": "alessandro.minoccheri@gmail.com",
+    "homepage": "http://alessandrominoccheri.com",
+    "role": "Developer"
+  }
+  ],
+    "require": {
+      "php": ">=5.3.0",
+      "ext-curl": "*",
+      "composer/installers": "*"
+    }
+}
