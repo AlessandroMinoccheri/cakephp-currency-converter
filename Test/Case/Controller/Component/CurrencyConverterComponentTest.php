@@ -28,8 +28,27 @@ class CurrencyConverterComponentTest extends CakeTestCase {
         unset($this->CurrencyConverterComponent);
     }
 
-    public function testGuestWithoutPermission() {
-        
-        $this->assertEquals(1,1);
+    public function testAmountWithComma() {
+        $fromCurrency   = 'EUR';
+        $toCurrency     = 'GBP';
+        $amount         = '20,00';
+        $saveIntoDb     = 0;
+        $hourDifference = 0;
+
+        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference);
+
+        $this->assertGreaterThan($result, $amount);
+    }
+
+    public function testAmountWithPoint() {
+        $fromCurrency   = 'EUR';
+        $toCurrency     = 'GBP';
+        $amount         = '20.00';
+        $saveIntoDb     = 0;
+        $hourDifference = 0;
+
+        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference);
+
+        $this->assertGreaterThan($result, $amount);
     }
 }

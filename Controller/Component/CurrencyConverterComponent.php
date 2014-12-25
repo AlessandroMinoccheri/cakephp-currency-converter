@@ -30,7 +30,7 @@ class CurrencyConverterComponent extends Component {
             $find = 0;
             $rate = 0;
 
-            if ($fromCurrency=="PDS")
+            if ($fromCurrency == "PDS")
                 $fromCurrency = "GBP";
             
             if($saveIntoDb == 1){
@@ -53,10 +53,10 @@ class CurrencyConverterComponent extends Component {
 
                         $CurrencyConverter->id = $row['CurrencyConverter']['id'];
             $CurrencyConverter->set(array(
-                'from' => $fromCurrency,
-                'to' => $toCurrency,
-                'rates' => $rate,
-                            'modified' => date('Y-m-d H:i:s'),
+                'from'        => $fromCurrency,
+                'to'          => $toCurrency,
+                'rates'       => $rate,
+                            'modified'    => date('Y-m-d H:i:s'),
             ));
             $CurrencyConverter->save();
                     }
@@ -70,20 +70,20 @@ class CurrencyConverterComponent extends Component {
 
                     $CurrencyConverter->create();
           $CurrencyConverter->set(array(
-              'from' => $fromCurrency,
-              'to' => $toCurrency,
-              'rates' => $rate,
-              'created' => date('Y-m-d H:i:s'),
-                        'modified' => date('Y-m-d H:i:s'),
+              'from'         => $fromCurrency,
+              'to'           => $toCurrency,
+              'rates'        => $rate,
+              'created'      => date('Y-m-d H:i:s'),
+                        'modified'     => date('Y-m-d H:i:s'),
           ));
           $CurrencyConverter->save();
                 }
-                $value = (double)$rate*(double)$amount;
+                $value = (double)$rate * (double)$amount;
                 return number_format((double)$value, 2, '.', '');
             }
             else{
                 $rate = $this->_getRates($fromCurrency, $toCurrency);
-                $value = (double)$rate*(double)$amount;
+                $value = (double)$rate * (double)$amount;
                 return number_format((double)$value, 2, '.', '');
             }
         }
@@ -109,12 +109,13 @@ class CurrencyConverterComponent extends Component {
         }
 
         if(isset($result)){
-            $allData = explode(',',$result); /* Get all the contents to an array */
+            $allData = explode(',', $result); /* Get all the contents to an array */
             $rate = $allData[1];
         }
         else{
             $rate = 0;
         }
+        
         return($rate);
     }
 
