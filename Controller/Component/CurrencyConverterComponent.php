@@ -23,9 +23,10 @@ class CurrencyConverterComponent extends Component {
      * @param float $amount the amount to convert.
      * @param boolean $saveIntoDb if develop wants to store convertion rate for use it without resending data to yahoo service.
      * @param int $hourDifference the hour difference to check if the last convertion is passed, if yes make a new call to yahoo finance api.
+     * @param string $dataSource which dataSOurce need to use
      * @return float the total amount converted into the new currency
      */
-    public function convert($fromCurrency, $toCurrency, $amount, $saveIntoDb = 1, $hourDifference = 1) {
+    public function convert($fromCurrency, $toCurrency, $amount, $saveIntoDb = 1, $hourDifference = 1, $dataSource = 'default') {
     	if($fromCurrency != $toCurrency){
             $rate = 0;
 
@@ -33,7 +34,7 @@ class CurrencyConverterComponent extends Component {
                 $fromCurrency = "GBP";
             
             if($saveIntoDb == 1){
-                $this->_checkIfExistTable();
+                $this->_checkIfExistTable($dataSource);
 
                 $CurrencyConverter = ClassRegistry::init('CurrencyConverter');
                 
@@ -150,14 +151,15 @@ class CurrencyConverterComponent extends Component {
 
     /**
      * Convertion function call to yahoo finance api
-     *
+     * 
+     * @param string $dataSource which dataSOurce need to use
      * @return boolean if the table standard currency_converters exist into the database
      */
-    private function _checkIfExistTable(){
+    private function _checkIfExistTable($dataSource){
     	$find = 0;
         
     	App::uses('ConnectionManager', 'Model');
-    	$db = ConnectionManager::getDataSource('default');
+    	$db = ConnectionManager::getDataSource($dataSource);
 		$tables = $db->listSources();
 		foreach($tables as $t){
 			if($t == 'currency_converters'){

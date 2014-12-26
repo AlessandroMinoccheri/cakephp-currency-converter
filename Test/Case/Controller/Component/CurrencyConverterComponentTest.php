@@ -7,7 +7,7 @@ App::uses('ComponentCollection', 'Controller');
 App::uses('CurrencyConverterComponent', 'CurrencyConverter.Controller/Component');
 
 class TestConverterController extends Controller {
-    // empty
+
 }
 
 class CurrencyConverterComponentTest extends CakeTestCase {
@@ -35,8 +35,9 @@ class CurrencyConverterComponentTest extends CakeTestCase {
         $amount         = '20,00';
         $saveIntoDb     = 0;
         $hourDifference = 0;
+        $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference);
+        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
 
         $this->assertGreaterThan($result, $amount);
     }
@@ -47,8 +48,9 @@ class CurrencyConverterComponentTest extends CakeTestCase {
         $amount         = '20.00';
         $saveIntoDb     = 0;
         $hourDifference = 0;
+        $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference);
+        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
 
         $this->assertGreaterThan($result, $amount);
     }
@@ -59,8 +61,9 @@ class CurrencyConverterComponentTest extends CakeTestCase {
         $amount         = '20,00';
         $saveIntoDb     = 1;
         $hourDifference = 1;
+        $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference);
+        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
 
         $this->assertGreaterThan($result, $amount);
     }
@@ -71,8 +74,9 @@ class CurrencyConverterComponentTest extends CakeTestCase {
         $amount         = '20.00';
         $saveIntoDb     = 1;
         $hourDifference = 1;
+        $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference);
+        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
 
         $this->assertGreaterThan($result, $amount);
     }
