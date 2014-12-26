@@ -40,7 +40,6 @@ git submodule add -f https://github.com/AlessandroMinoccheri/cakephp-currency-co
 app/Plugin/CurrencyConverter/.
 ```
 
-
 _[Manual]_
 
 * Download this: [https://github.com/AlessandroMinoccheri/cakephp-currency-converter/archive/master.zip](https://github.com/AlessandroMinoccheri/cakephp-currency-converter/archive/master.zip)
