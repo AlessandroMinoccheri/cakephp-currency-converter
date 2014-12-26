@@ -80,16 +80,4 @@ class CurrencyConverterComponentTest extends CakeTestCase {
 
         $this->assertGreaterThan($result, $amount);
     }
-
-    public function testCheckInsertedInDatabase() {
-        $fromCurrency   = 'EUR';
-        $toCurrency     = 'GBP';
-        $hourDifference = 1;
-        $expected = 1;
-
-        $result = $this->CurrencyConverter->checkToFind($fromCurrency, $toCurrency, $hourDifference);
-
-        $this->assertEquals($expected, $result['find']);
-        $this->assertGreaterThan(0, $result['rate']);
-    }
 }
