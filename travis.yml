@@ -1,0 +1,28 @@
+language: php
+ 
+php:
+  - 5.3
+  - 5.4
+ 
+before_script:
+  - git clone --depth 1 git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
+  - mv ../cakephp-currency-converter plugins/CurrencyConverter
+  - chmod -R 777 ../cakephp/app/tmp
+  - composer global require 'phpunit/phpunit=3.7.33'
+  - ln -s ~/.composer/vendor/phpunit/phpunit/PHPUnit ../cakephp/vendors/PHPUnit
+  - echo "<?php
+    class DATABASE_CONFIG {
+    public \$test = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'cakephp_test',
+      'host' => '0.0.0.0',
+      'login' => 'travis',
+      'persistent' => false,
+    );
+    }" > ../cakephp/app/Config/database.php
+ 
+script:
+  - ./lib/Cake/Console/cake test CurrencyConverter Controller/Component/CurrencyConverterComponent --stderr
+ 
+notifications:
+  email: false
