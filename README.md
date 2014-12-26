@@ -1,10 +1,10 @@
 cakephp-currency-converter V 1.0.0
 ==============================
 
-[![Latest Stable Version](https://poser.pugx.org/alessandrominoccheri/cakephpcurrencyconverter/v/stable.svg)](https://packagist.org/packages/alessandrominoccheri/cakephpcurrencyconverter)
-[![License](https://poser.pugx.org/alessandrominoccheri/cakephpcurrencyconverter/license.svg)](https://packagist.org/packages/alessandrominoccheri/cakephpcurrencyconverter)
+[![Latest Stable Version](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/v/stable.svg)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
+[![License](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/license.svg)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
 [![Build Status](https://api.travis-ci.org/AlessandroMinoccheri/cakephp-currency-converter.png)](https://travis-ci.org/AlessandroMinoccheri/cakephp-currency-converter)
-[![Total Downloads](https://poser.pugx.org/alessandrominoccheri/cakephpcurrencyconverter/d/total.png)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
+[![Total Downloads](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/d/total.png)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
 
 A CakePHP plugin to convert your price from a currency to another
 
