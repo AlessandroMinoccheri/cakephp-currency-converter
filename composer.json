@@ -1,6 +1,6 @@
 {
-  "name": "AlessandroMinoccheri/cakephp-currency-converter",
-  "type": "plugin",
+  "name": "alessandrominoccheri/cakephp-currency-converter",
+  "type": "cakephp-plugin",
   "description": "A CakePHP plugin to convert your price from a currency to another",
   "keywords": ["cakephp", "component", "currency", "plugin", "converter", "money"],
   "homepage": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
