@@ -2,8 +2,12 @@
 App::uses('Component', 'Controller', 'Session');
 
 class CurrencyConverterComponent extends Component {
-	var $controller = '';
-    var $components = array('RequestHandler');
+/**
+ * The current controller.
+ *
+ * @var string
+ */
+	public $controller = '';
 
     /**
      * Initialization to get controller variable
