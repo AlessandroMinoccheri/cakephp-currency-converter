@@ -106,6 +106,11 @@ function convert($from_currency, $to_currency, $amount, $save_into_db = 1, $hour
 
 ---
 
+##Coming Soon
+
+In coming the plugin version for cakephp 3.0
+
+
 ---
 ##License
 
