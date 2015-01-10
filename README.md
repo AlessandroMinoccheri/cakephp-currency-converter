@@ -27,7 +27,7 @@ If you haven't set to use database, instead, every time you call the library it 
 
 ##Requirements
 
-* CakePHP 2.x
+* CakePHP 3.x
 * PHP 5.x 
 
 ---
