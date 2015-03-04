@@ -1,0 +1,30 @@
+{
+    "name"        : "cakephp-currency-converter",
+    "version"     : "1.1.0",
+    "description" : "A CakePHP plugin to convert your price from a currency to another",
+    "authors"     : [
+        {
+            "name"  : "Alessandro Minoccheri",
+            "email" : "alessandro.minoccheri@gmail.com"
+        }
+    ],
+    "license"  : "MIT",
+    "homepage" : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
+    "keywords" : [
+        "cakephp",
+        "currency",
+        "money",
+        "converter",
+        "euro",
+        "dollar",
+        "finance",
+        "yahoo"
+    ],
+    "repository" : {
+        "type" : "git",
+        "url"  : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git"
+    },
+    "bugs" : {
+        "url" : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter/issues"
+    }
+}
