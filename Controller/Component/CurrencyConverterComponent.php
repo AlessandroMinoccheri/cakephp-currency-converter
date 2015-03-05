@@ -34,8 +34,9 @@ class CurrencyConverterComponent extends Component {
     	if($fromCurrency != $toCurrency){
             $rate = 0;
 
-            if ($fromCurrency == "PDS")
+            if ($fromCurrency == "PDS"){
                 $fromCurrency = "GBP";
+            }
             
             if($saveIntoDb == 1){
                 $this->_checkIfExistTable($dataSource);
@@ -46,6 +47,7 @@ class CurrencyConverterComponent extends Component {
                 if(isset($arrReturn['find'])){
                     $find = $arrReturn['find'];
                 }
+
                 if(isset($arrReturn['rate'])){
                     $rate = $arrReturn['rate'];
                 }
@@ -61,6 +63,7 @@ class CurrencyConverterComponent extends Component {
 					    'created'      => date('Y-m-d H:i:s'),
                         'modified'     => date('Y-m-d H:i:s'),
 					));
+                    
 					$CurrencyConverter->save();
                 }
 
