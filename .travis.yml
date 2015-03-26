@@ -7,7 +7,7 @@ php:
  
 before_script:
   - git clone --depth 1 git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
-  - cp -R ../CurrencyConverter ./plugins/CurrencyConverter
+  - cp -R ../cakephp-currency-converter ./plugins/CurrencyConverter
   - chmod -R 777 ../cakephp/app/tmp
   - composer global require 'phpunit/phpunit=3.7.33'
   - ln -s ~/.composer/vendor/phpunit/phpunit/PHPUnit ../cakephp/vendors/PHPUnit
