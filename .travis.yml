@@ -4,16 +4,22 @@ php:
   - 5.3
   - 5.4
   - 5.5
- 
-matrix:
+
+env:
+  global:
+    - CAKEPHP_ERROR_CONFIG=""
+    - CAKEPHP_SHELL_NAME=test
+
+  matrix:
     - CAKEPHP_VERSION=master
     - CAKEPHP_VERSION=2.5
     - CAKEPHP_VERSION=2.3.10
     - CAKEPHP_VERSION=2.2.9
     - CAKEPHP_VERSION=2.1.5
     - CAKEPHP_VERSION=2.0.6 CAKEPHP_SHELL_NAME=testsuite
- 
+
 before_script:
+  - php -m
   - git clone --depth 1 --branch $CAKEPHP_VERSION git://github.com/cakephp/cakephp ../cakephp
   - cd ../cakephp
   - cp -R ../cakephp-currency-converter ./plugins/CurrencyConverter
