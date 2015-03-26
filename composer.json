@@ -28,4 +28,7 @@
       "ext-curl": "*",
       "composer/installers": "*"
     }
+  "extra": {
+    "installer-name": "CurrencyConverter"
+  }
 }
