@@ -7,7 +7,7 @@ php:
 
 env:
   global:
-    - PLUGIN_NAME=Users
+    - PLUGIN_NAME=CurrencyConverter
     - DB=mysql
     - REQUIRE="phpunit/phpunit:3.7.31"
 
