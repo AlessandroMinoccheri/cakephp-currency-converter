@@ -5,10 +5,18 @@ php:
   - 5.4
   - 5.5
  
+matrix:
+    - CAKEPHP_VERSION=master
+    - CAKEPHP_VERSION=2.5
+    - CAKEPHP_VERSION=2.3.10
+    - CAKEPHP_VERSION=2.2.9
+    - CAKEPHP_VERSION=2.1.5
+    - CAKEPHP_VERSION=2.0.6 CAKEPHP_SHELL_NAME=testsuite
+ 
 before_script:
-  - git clone --depth 1 git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
+  - git clone --depth 1 --branch $CAKEPHP_VERSION git://github.com/cakephp/cakephp ../cakephp
   - cd ../cakephp
-  - cp -R ../CurrencyConverter ./plugins/CurrencyConverter
+  - cp -R ../cakephp-currency-converter ./plugins/CurrencyConverter
   - chmod -R 777 ../cakephp/app/tmp
   - composer global require 'phpunit/phpunit=3.7.33'
   - ln -s ~/.composer/vendor/phpunit/phpunit/PHPUnit ../cakephp/vendors/PHPUnit
