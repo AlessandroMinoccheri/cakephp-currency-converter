@@ -35,6 +35,14 @@ If you haven't set to use database, instead, every time you call the library it 
 #Installation
 To install the plugin inside your cakephp project you can do this:
 
+_[Composer]_
+* Open your console
+* Inside your application folder
+* Execute
+```bash
+$ composer require "alessandrominoccheri/cakephp-currency-converter:3.0.*@dev"
+```
+
 _[GIT Submodule]_
 
 * Open your console 
@@ -55,9 +63,10 @@ _[Manual]_
 _[GIT Clone]_
 
 In your `Plugin` directory type:
+```bash
+$ git clone https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git CurrencyConverter
+```
 
-    git clone https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git CurrencyConverter
-    
 ---
 
 ##Enable plugin
