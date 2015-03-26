@@ -27,8 +27,8 @@
       "php": ">=5.3.0",
       "ext-curl": "*",
       "composer/installers": "*"
-    }
-  "extra": {
+    },
+    "extra": {
     "installer-name": "CurrencyConverter"
   }
 }
