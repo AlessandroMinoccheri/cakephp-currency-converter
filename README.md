@@ -1,4 +1,4 @@
-cakephp-currency-converter V 1.1.3
+cakephp-currency-converter V 1.1.4
 ==============================
 
 [![Latest Stable Version](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/v/stable.svg)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
