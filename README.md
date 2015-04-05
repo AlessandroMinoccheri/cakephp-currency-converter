@@ -27,13 +27,21 @@ If you haven't set to use database, instead, every time you call the library it 
 
 ##Requirements
 
-* CakePHP 2.x
+* CakePHP 3.x
 * PHP 5.x 
 
 ---
 
 #Installation
 To install the plugin inside your cakephp project you can do this:
+
+_[Composer]_
+* Open your console
+* Inside your application folder
+* Execute
+```bash
+$ composer require "alessandrominoccheri/cakephp-currency-converter:3.0.*@dev"
+```
 
 _[GIT Submodule]_
 
@@ -55,14 +63,15 @@ _[Manual]_
 _[GIT Clone]_
 
 In your `Plugin` directory type:
+```bash
+$ git clone https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git CurrencyConverter
+```
 
-    git clone https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git CurrencyConverter
-    
 ---
 
 ##Enable plugin
 
-In cakephp 2.x you need to enable the plugin your app/Config/bootstrap.php file:
+In cakephp 3.x you need to enable the plugin your app/Config/bootstrap.php file:
 ```
 CakePlugin::load('CurrencyConverter');
 ```
