@@ -1,13 +1,11 @@
 <?php
-App::uses('Component', 'Controller', 'Session');
+namespace CurrencyConverter\Controller\Component;
 
-class CurrencyConverterComponent extends Component {
-/**
- * The current controller.
- *
- * @var string
- */
-	public $controller = '';
+use Cake\Controller\Component;
+
+class CurrencyConverterComponent extends Component
+{
+    public $controller = '';
 
     /**
      * Initialization to get controller variable
@@ -15,7 +13,7 @@ class CurrencyConverterComponent extends Component {
      * @param Controller $controller The controller to use.
      * @param array $settings Array of settings.
      */
-	function initialize(Controller $controller, $settings = array()) { 
+    function initialize(Controller $controller, $settings = array()) { 
         $this->controller =& $controller; 
     } 
 
@@ -31,7 +29,7 @@ class CurrencyConverterComponent extends Component {
      * @return float the total amount converted into the new currency
      */
     public function convert($fromCurrency, $toCurrency, $amount, $saveIntoDb = 1, $hourDifference = 1, $dataSource = 'default') {
-    	if($fromCurrency != $toCurrency){
+        if($fromCurrency != $toCurrency){
             $rate = 0;
 
             if ($fromCurrency == "PDS"){
@@ -56,15 +54,15 @@ class CurrencyConverterComponent extends Component {
                     $rate = $this->_getRates($fromCurrency, $toCurrency);
 
                     $CurrencyConverter->create();
-					$CurrencyConverter->set(array(
-					    'from'         => $fromCurrency,
-					    'to'           => $toCurrency,
-					    'rates'        => $rate,
-					    'created'      => date('Y-m-d H:i:s'),
+                    $CurrencyConverter->set(array(
+                        'from'         => $fromCurrency,
+                        'to'           => $toCurrency,
+                        'rates'        => $rate,
+                        'created'      => date('Y-m-d H:i:s'),
                         'modified'     => date('Y-m-d H:i:s'),
-					));
+                    ));
                     
-					$CurrencyConverter->save();
+                    $CurrencyConverter->save();
                 }
 
                 $value = (double)$rate * (double)$amount;
@@ -163,32 +161,32 @@ class CurrencyConverterComponent extends Component {
      * @return boolean if the table standard currency_converters exist into the database
      */
     private function _checkIfExistTable($dataSource){
-    	$find = 0;
+        $find = 0;
         
-    	App::uses('ConnectionManager', 'Model');
-    	$db = ConnectionManager::getDataSource($dataSource);
-		$tables = $db->listSources();
-		foreach($tables as $t){
-			if($t == 'currency_converters'){
-				$find = 1;
+        App::uses('ConnectionManager', 'Model');
+        $db = ConnectionManager::getDataSource($dataSource);
+        $tables = $db->listSources();
+        foreach($tables as $t){
+            if($t == 'currency_converters'){
+                $find = 1;
             }
-		}
+        }
 
-		if($find == 0){
-			$sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `from` varchar(5) NOT NULL,
-			  `to` varchar(5) NOT NULL,
-			  `rates` varchar(10) NOT NULL,
-			  `created` datetime NOT NULL,
-			  `modified` datetime NOT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;';
+        if($find == 0){
+            $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
+              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `from` varchar(5) NOT NULL,
+              `to` varchar(5) NOT NULL,
+              `rates` varchar(10) NOT NULL,
+              `created` datetime NOT NULL,
+              `modified` datetime NOT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;';
 
-			$results = $db->query($sql);
-		}
-		else{
-			return(true);
+            $results = $db->query($sql);
+        }
+        else{
+            return(true);
         }
     }
 }
