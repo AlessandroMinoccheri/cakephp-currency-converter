@@ -10,7 +10,9 @@ env:
     - CAKEPHP_SHELL_NAME=test
 
   matrix:
-    - CAKEPHP_VERSION=master
+    allow_failures:
+      - php: hhvm-nightly
+    fast_finish: true
 
     include:
     - php: 5.4
