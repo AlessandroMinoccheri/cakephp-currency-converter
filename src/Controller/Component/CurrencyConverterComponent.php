@@ -3,6 +3,8 @@
 namespace CurrencyConverter\Controller\Component;
 
 use Cake\Controller\Component;
+use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 
 class CurrencyConverterComponent extends Component
 {
@@ -40,7 +42,9 @@ class CurrencyConverterComponent extends Component
             if($saveIntoDb == 1){
                 $this->_checkIfExistTable($dataSource);
 
-                $CurrencyConverter = ClassRegistry::init('CurrencyConverter');
+                $CurrencyConverter = TableRegistry::get('CurrencyConverter');
+                var_dump($CurrencyConverter);
+                die();
                 
                 $arrReturn = $this->checkToFind($fromCurrency, $toCurrency, $hourDifference);
                 if(isset($arrReturn['find'])){
@@ -93,7 +97,7 @@ class CurrencyConverterComponent extends Component
         $find = 0;
         $rate = 0;
 
-        $CurrencyConverter = ClassRegistry::init('CurrencyConverter');
+        $CurrencyConverter = TableRegistry::get('CurrencyConverter');
         $result = $CurrencyConverter->find('all', array('conditions' => 
             array('from' => $fromCurrency, 'to' => $toCurrency)));
 
@@ -162,32 +166,19 @@ class CurrencyConverterComponent extends Component
      * @return boolean if the table standard currency_converters exist into the database
      */
     private function _checkIfExistTable($dataSource){
-        $find = 0;
-        
-        App::uses('ConnectionManager', 'Model');
-        $db = ConnectionManager::getDataSource($dataSource);
-        $tables = $db->listSources();
-        foreach($tables as $t){
-            if($t == 'currency_converters'){
-                $find = 1;
-            }
-        }
+        $db = ConnectionManager::get($dataSource);
 
-        if($find == 0){
-            $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
-              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `from` varchar(5) NOT NULL,
-              `to` varchar(5) NOT NULL,
-              `rates` varchar(10) NOT NULL,
-              `created` datetime NOT NULL,
-              `modified` datetime NOT NULL,
-              PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;';
+        $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
+          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+          `from` varchar(5) NOT NULL,
+          `to` varchar(5) NOT NULL,
+          `rates` varchar(10) NOT NULL,
+          `created` datetime NOT NULL,
+          `modified` datetime NOT NULL,
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;';
 
-            $results = $db->query($sql);
-        }
-        else{
-            return(true);
-        }
+        $results = $db->query($sql);
+        return $results;
     }
 }
