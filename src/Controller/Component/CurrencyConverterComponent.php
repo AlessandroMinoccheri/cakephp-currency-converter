@@ -42,7 +42,10 @@ class CurrencyConverterComponent extends Component
             if($saveIntoDb == 1){
                 $this->_checkIfExistTable($dataSource);
 
-                $CurrencyConverter = TableRegistry::get('CurrencyConverter.CurrencyConverter');
+                $CurrencyConverter = TableRegistry::get('CurrencyConverter', [
+                    'className' => 'CurrencyConverter\Model\Table\CurrencyConvertersTable',
+                    'table' => 'currency_converter'
+                ]);
                 
                 $arrReturn = $this->checkToFind($fromCurrency, $toCurrency, $hourDifference);
                 if(isset($arrReturn['find'])){
@@ -95,9 +98,16 @@ class CurrencyConverterComponent extends Component
         $find = 0;
         $rate = 0;
 
-        $CurrencyConverter = TableRegistry::get('CurrencyConverter.CurrencyConverter');
-        $result = $CurrencyConverter->find('all', array('conditions' => 
-            array('from' => $fromCurrency, 'to' => $toCurrency)));
+        $CurrencyConverter = TableRegistry::get('CurrencyConverter', [
+            'className' => 'CurrencyConverter\Model\Table\CurrencyConvertersTable',
+            'table' => 'currency_converter'
+        ]);
+
+        /*$result = $CurrencyConverter->find('all', array('conditions' => 
+            array('from' => $fromCurrency, 'to' => $toCurrency)));*/
+
+        $result = $CurrencyConverter->find('all')
+            ->where(['from' => $fromCurrency, 'to' => $toCurrency ]);
 
         foreach ($result as $row){
             $find = 1;
