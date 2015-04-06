@@ -59,16 +59,16 @@ class CurrencyConverterComponent extends Component
                 if($find == 0){
                     $rate = $this->_getRates($fromCurrency, $toCurrency);
 
-                    $CurrencyConverter->create();
-                    $CurrencyConverter->set(array(
+                    $data = [
                         'from'         => $fromCurrency,
                         'to'           => $toCurrency,
                         'rates'        => $rate,
                         'created'      => date('Y-m-d H:i:s'),
                         'modified'     => date('Y-m-d H:i:s'),
-                    ));
-                    
-                    $CurrencyConverter->save();
+                    ];
+
+                    $entity = $CurrencyConverter->newEntity($data);
+                    $CurrencyConverter->save($entity);
                 }
 
                 $value = (double)$rate * (double)$amount;
