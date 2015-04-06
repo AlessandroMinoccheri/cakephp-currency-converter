@@ -1,7 +1,6 @@
 language: php
  
 php:
-  - 5.3
   - 5.4
   - 5.5
 
@@ -11,8 +10,7 @@ env:
     - CAKEPHP_SHELL_NAME=test
 
   matrix:
-    - CAKEPHP_VERSION=2.6
-    - CAKEPHP_VERSION=2.7
+    - CAKEPHP_VERSION=master
 
 before_script:
   - php -m
