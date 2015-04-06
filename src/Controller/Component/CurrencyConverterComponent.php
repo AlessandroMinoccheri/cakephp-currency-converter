@@ -13,10 +13,10 @@ class CurrencyConverterComponent extends Component
     /**
      * Initialization to get controller variable
      *
-     * @param Controller $controller The controller to use.
+     * @param string $controller The controller to use.
      * @param array $settings Array of settings.
      */
-    function initialize(Controller $controller, $settings = array()) { 
+    function initialize($controller, $settings = array()) { 
         $this->controller =& $controller; 
     } 
 
@@ -42,9 +42,7 @@ class CurrencyConverterComponent extends Component
             if($saveIntoDb == 1){
                 $this->_checkIfExistTable($dataSource);
 
-                $CurrencyConverter = TableRegistry::get('CurrencyConverter');
-                var_dump($CurrencyConverter);
-                die();
+                $CurrencyConverter = TableRegistry::get('CurrencyConverter.CurrencyConverter');
                 
                 $arrReturn = $this->checkToFind($fromCurrency, $toCurrency, $hourDifference);
                 if(isset($arrReturn['find'])){
@@ -97,7 +95,7 @@ class CurrencyConverterComponent extends Component
         $find = 0;
         $rate = 0;
 
-        $CurrencyConverter = TableRegistry::get('CurrencyConverter');
+        $CurrencyConverter = TableRegistry::get('CurrencyConverter.CurrencyConverter');
         $result = $CurrencyConverter->find('all', array('conditions' => 
             array('from' => $fromCurrency, 'to' => $toCurrency)));
 

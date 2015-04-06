@@ -1,10 +1,10 @@
 <?php
 
-namespace CurrencyConverter\Model\Entity;
+namespace App\Model\Table;
 
-use Cake\ORM\Entity;
+use Cake\ORM\Table;
 
-class CurrencyConverter extends Entity
+class CurrencyConverterTable extends Table
 {
 	public function initialize(array $config)
     {
