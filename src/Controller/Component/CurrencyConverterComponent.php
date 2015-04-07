@@ -8,17 +8,17 @@ use Cake\ORM\TableRegistry;
 
 class CurrencyConverterComponent extends Component
 {
-    public $controller = '';
+    public $controller = null;
 
-    /**
-     * Initialization to get controller variable
-     *
-     * @param string $controller The controller to use.
-     * @param array $settings Array of settings.
-     */
-    function initialize($controller, $settings = array()) { 
-        $this->controller =& $controller; 
-    } 
+    public function setController($controller)
+    {
+        $this->controller = $controller;
+    }
+
+    public function startup($event)
+    {
+        $this->setController($event->subject());
+    }
 
     /**
      * Convertion function

@@ -78,11 +78,11 @@ class CurrencyConverterComponentTest extends TestCase {
 
         $this->assertGreaterThan($result, $amount);
     }
-
+*/
     public function tearDown()
     {
         parent::tearDown();
         // Clean up after we're done
         unset($this->CurrencyConverter, $this->controller);
-    }*/
+    }
 }
