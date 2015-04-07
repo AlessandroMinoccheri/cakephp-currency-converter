@@ -1,42 +1,30 @@
 <?php
-App::uses('Controller', 'Controller');
-App::uses('Model', 'Model');
-App::uses('CakeRequest', 'Network');
-App::uses('CakeResponse', 'Network');
-App::uses('ComponentCollection', 'Controller');
-App::uses('CurrencyConverterComponent', 'CurrencyConverter.Controller/Component');
+namespace App\Test\TestCase\Controller\Component;
 
-namespace CurrencyConverter\Test\TestCase\Controller\Component\Behavior;
-
-use ArrayObject;
-use Cake\Event\Event;
-use Cake\I18n\Time;
-use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
+use CurrencyConverter\Controller\Component\CurrencyConverterComponent;
+use Cake\Controller\Controller;
+use Cake\Controller\ComponentRegistry;
+use Cake\Network\Request;
+use Cake\Network\Response;
 use Cake\TestSuite\TestCase;
-use CurrencyConverter\Test\TestCase\Controller\Component\CurrencyConverterComponent;
 
-class TestConverterController extends Controller {
-
-}
-
-class CurrencyConverterComponentTest extends CakeTestCase {
-    public $fixtures = array('plugin.CurrencyConverter.CurrencyConverter');
-    public $CurrencyConverterComponent = null;
-    public $Controller = null;
+class CurrencyConverterComponentTest extends TestCase {
+    public $fixtures = ['app.currencyconverter'];
+    public $CurrencyConverter = null;
+    public $controller = null;
 
     public function setUp() {
         parent::setUp();
-        $Collection = new ComponentCollection();
-        $this->CurrencyConverter = new CurrencyConverterComponent($Collection);
-        $CakeRequest = new CakeRequest();
-        $CakeResponse = new CakeResponse();
-        $this->Controller = new TestConverterController($CakeRequest, $CakeResponse);
-    }
-
-    public function tearDown() {
-        parent::tearDown();
-        unset($this->CurrencyConverterComponent);
+        // Setup our component and fake test controller
+        $request = new Request();
+        $response = new Response();
+        $this->controller = $this->getMock(
+            'Cake\Controller\Controller',
+            [],
+            [$request, $response]
+        );
+        $registry = new ComponentRegistry($this->controller);
+        $this->CurrencyConverter = new CurrencyConverterComponent($registry);
     }
 
     public function testAmountWithComma() {
@@ -51,7 +39,7 @@ class CurrencyConverterComponentTest extends CakeTestCase {
 
         $this->assertGreaterThan($result, $amount);
     }
-
+/*
     public function testAmountWithPoint() {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
@@ -90,4 +78,11 @@ class CurrencyConverterComponentTest extends CakeTestCase {
 
         $this->assertGreaterThan($result, $amount);
     }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        // Clean up after we're done
+        unset($this->CurrencyConverter, $this->controller);
+    }*/
 }

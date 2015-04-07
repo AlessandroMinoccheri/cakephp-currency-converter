@@ -113,21 +113,21 @@ class CurrencyConverterComponent extends Component
             $find = 1;
             $lastUpdated = $row['CurrencyConverter']['modified'];
             $now = date('Y-m-d H:i:s');
-            $dStart = new DateTime($now);
-            $dEnd = new DateTime($lastUpdated);
+            $dStart = new \DateTime($now);
+            $dEnd = new \DateTime($lastUpdated);
             $diff = $dStart->diff($dEnd);
 
             if(((int)$diff->y >= 1) || ((int)$diff->m >= 1) || ((int)$diff->d >= 1) || ((int)$diff->h >= $hourDifference) || ((double)$row['CurrencyConverter']['rates'] == 0)){
                 $rate = $this->_getRates($fromCurrency, $toCurrency);
 
-                $CurrencyConverter->id = $row['CurrencyConverter']['id'];
-                $CurrencyConverter->set(array(
+                $data = [
                     'from'        => $fromCurrency,
                     'to'          => $toCurrency,
                     'rates'       => $rate,
                     'modified'    => date('Y-m-d H:i:s'),
-                ));
-                $CurrencyConverter->save();
+                ];
+                $entity = $CurrencyConverter->newEntity($data);
+                $CurrencyConverter->save($entity);
             }
             else{
                 $rate = $row['CurrencyConverter']['rates'];
