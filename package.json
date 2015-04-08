@@ -12,6 +12,7 @@
     "homepage" : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
     "keywords" : [
         "cakephp",
+        "cakephp3",
         "currency",
         "money",
         "converter",

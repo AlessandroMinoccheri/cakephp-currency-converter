@@ -11,7 +11,8 @@
     "money", 
     "finance", 
     "euro", 
-    "dollar"
+    "dollar",
+    "cakephp3", 
   ],
   "homepage": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
   "license": "MIT",

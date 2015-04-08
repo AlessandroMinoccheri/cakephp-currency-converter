@@ -30,7 +30,7 @@ If you haven't set to use database, instead, every time you call the library it 
 * CakePHP 3.x
 * PHP 5.x 
 
-#For cakephp 2.x you can see version 1.1.4
+For cakephp 2.x you can download version 1.1.4
 
 ---
 
