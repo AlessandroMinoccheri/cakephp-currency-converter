@@ -29,8 +29,6 @@ class CurrencyConverterComponentTest extends TestCase {
 
         $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
             
-        echo'RESULT: ' . $result . ' AMOUNT: ' . $amount;
-
         $this->assertGreaterThan((float)$result, (float)$amount);
     }
 
