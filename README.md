@@ -1,4 +1,4 @@
-cakephp-currency-converter V 1.1.4
+cakephp-currency-converter V 2.0.0
 ==============================
 
 [![Latest Stable Version](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/v/stable.svg)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
@@ -131,6 +131,10 @@ function convert($from_currency, $to_currency, $amount, $save_into_db = 1, $hour
 * **amount:** is the price to convert (Example: 200,20)
 * **save_into_db:** is the variable that configure to use the database or not, if not hour_difference params is escaped
 * **hour_difference:** is the hour difference to update your currency conversion. For example if you have set to update currency rates every hour, this library get the currency conversion from yahoo finance the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
+
+---
+
+For cakephp 2.x you can download version 1.1.4
 
 ---
 
