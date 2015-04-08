@@ -15,16 +15,8 @@ class CurrencyConverterComponentTest extends TestCase {
 
     public function setUp() {
         parent::setUp();
-        // Setup our component and fake test controller
-        $request = new Request();
-        $response = new Response();
-        $this->controller = $this->getMock(
-            'Cake\Controller\Controller',
-            [],
-            [$request, $response]
-        );
-        $registry = new ComponentRegistry($this->controller);
-        $this->CurrencyConverter = new CurrencyConverterComponent($registry);
+
+        $this->CurrencyConverter = new CurrencyConverterComponent(new ComponentRegistry(new Controller));
     }
 
     public function testAmountWithComma() {
@@ -36,10 +28,12 @@ class CurrencyConverterComponentTest extends TestCase {
         $dataSource     = 'test';
 
         $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+            
+        echo'RESULT: ' . $result . ' AMOUNT: ' . $amount;
 
-        $this->assertGreaterThan($result, $amount);
+        $this->assertGreaterThan((float)$result, (float)$amount);
     }
-/*
+
     public function testAmountWithPoint() {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
@@ -78,7 +72,7 @@ class CurrencyConverterComponentTest extends TestCase {
 
         $this->assertGreaterThan($result, $amount);
     }
-*/
+
     public function tearDown()
     {
         parent::tearDown();
