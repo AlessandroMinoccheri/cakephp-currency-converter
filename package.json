@@ -1,6 +1,6 @@
 {
     "name"        : "cakephp-currency-converter",
-    "version"     : "2.0.0",
+    "version"     : "2.0.1",
     "description" : "A CakePHP plugin to convert your price from a currency to another",
     "authors"     : [
         {
