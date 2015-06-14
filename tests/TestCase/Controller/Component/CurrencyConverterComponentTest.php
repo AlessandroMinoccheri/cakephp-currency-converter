@@ -13,13 +13,15 @@ class CurrencyConverterComponentTest extends TestCase {
     public $CurrencyConverter = null;
     public $controller = null;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
 
         $this->CurrencyConverter = new CurrencyConverterComponent(new ComponentRegistry(new Controller));
     }
 
-    public function testAmountWithComma() {
+    public function testAmountWithComma()
+    {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
         $amount         = '20,00';
@@ -28,11 +30,11 @@ class CurrencyConverterComponentTest extends TestCase {
         $dataSource     = 'test';
 
         $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
-            
         $this->assertGreaterThan((float)$result, (float)$amount);
     }
 
-    public function testAmountWithPoint() {
+    public function testAmountWithPoint()
+    {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
         $amount         = '20.00';
@@ -41,11 +43,11 @@ class CurrencyConverterComponentTest extends TestCase {
         $dataSource     = 'test';
 
         $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
-
         $this->assertGreaterThan($result, $amount);
     }
 
-    public function testAmountWithCommaSavedInDatabase() {
+    public function testAmountWithCommaSavedInDatabase()
+    {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
         $amount         = '20,00';
@@ -54,11 +56,11 @@ class CurrencyConverterComponentTest extends TestCase {
         $dataSource     = 'test';
 
         $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
-
         $this->assertGreaterThan($result, $amount);
     }
 
-    public function testAmountWithPointSavedInDatabase() {
+    public function testAmountWithPointSavedInDatabase()
+    {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
         $amount         = '20.00';
@@ -67,7 +69,6 @@ class CurrencyConverterComponentTest extends TestCase {
         $dataSource     = 'test';
 
         $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
-
         $this->assertGreaterThan($result, $amount);
     }
 
