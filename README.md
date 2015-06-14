@@ -6,17 +6,17 @@ cakephp-currency-converter V 2.0.1
 [![Build Status](https://api.travis-ci.org/AlessandroMinoccheri/cakephp-currency-converter.png)](https://travis-ci.org/AlessandroMinoccheri/cakephp-currency-converter)
 [![Total Downloads](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/d/total.png)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
 
-A CakePHP plugin to convert your price from a currency to another
+A CakePHP plugin to convert your price from a currency to another currency
 
 ---
 
 ##Background
 
-Is very frequently that inside your sites you need to convert your price from a currency to another.
+Is very frequently that inside your sites you need to convert your price from a currency to another currency.
 This library convert your price in every currency of the world.
 
-It works with yahoo finance api and store currency rates inside the site database if you want.
-User can configure in hour the time of currency rates update, if the user doesn't want to use database, rates are updated every time with the current conversion.
+It works with yahoo finance api and store currency rates inside a database if you want.
+User can configure time updates, if the user doesn't want to use database, rates are updated every time with the current conversion.
 
 If you have set to use database, for example, user sets to update currency rates every hour, this library get the currency conversion from yahoo finance the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
 In this way reduce the request time to convert and every hour currency rates are updated.
