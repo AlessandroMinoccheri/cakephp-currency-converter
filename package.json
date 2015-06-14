@@ -1,7 +1,7 @@
 {
     "name"        : "cakephp-currency-converter",
     "version"     : "2.0.1",
-    "description" : "A CakePHP plugin to convert your price from a currency to another",
+    "description" : "A CakePHP plugin to convert your price from a currency to another currency",
     "authors"     : [
         {
             "name"  : "Alessandro Minoccheri",
@@ -19,7 +19,10 @@
         "euro",
         "dollar",
         "finance",
-        "yahoo"
+        "yahoo",
+        "plugin",
+        "component",
+        "exchange"
     ],
     "repository" : {
         "type" : "git",
