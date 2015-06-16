@@ -45,16 +45,6 @@ _[Composer]_
 $ composer require "alessandrominoccheri/cakephp-currency-converter:3.0.*@dev"
 ```
 
-_[GIT Submodule]_
-
-* Open your console 
-* Go inside the folder you have got
-* Launch the command: 
-```
-git submodule add -f https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git
-app/Plugin/CurrencyConverter/.
-```
-
 _[Manual]_
 
 * Download this: [https://github.com/AlessandroMinoccheri/cakephp-currency-converter/archive/master.zip](https://github.com/AlessandroMinoccheri/cakephp-currency-converter/archive/master.zip)
@@ -76,17 +66,6 @@ $ git clone https://github.com/AlessandroMinoccheri/cakephp-currency-converter.g
 In cakephp 3.x you need to enable the plugin your config/bootstrap.php file:
 ```
 Plugin::load('CurrencyConverter');
-```
-
-In composer file you can edit autoload in this way:
-
-```
-"autoload": {
-    "psr-4": {
-        "App\\": "src",
-        "CurrencyConverter\\": "./plugins/CurrencyConverter/src"
-    }
-},
 ```
 
 But if you don0t want to use composer you can load plugin in this way:
