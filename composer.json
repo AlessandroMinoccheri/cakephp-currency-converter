@@ -34,5 +34,11 @@
     },
     "extra": {
     "installer-name": "CurrencyConverter"
+  },
+  "autoload": {
+    "psr-4": {
+        "App\\": "src",
+        "CurrencyConverter\\": "./plugins/CurrencyConverter/src"
+    }
   }
 }
