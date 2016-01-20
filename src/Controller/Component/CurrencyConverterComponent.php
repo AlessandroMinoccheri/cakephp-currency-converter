@@ -60,8 +60,8 @@ class CurrencyConverterComponent extends Component
                     $rate = $this->_getRates($fromCurrency, $toCurrency);
 
                     $data = [
-                        'from'         => $fromCurrency,
-                        'to'           => $toCurrency,
+                        'fromCurrency' => $fromCurrency,
+                        'toCurrency'   => $toCurrency,
                         'rates'        => $rate,
                         'created'      => date('Y-m-d H:i:s'),
                         'modified'     => date('Y-m-d H:i:s'),
@@ -107,7 +107,7 @@ class CurrencyConverterComponent extends Component
             array('from' => $fromCurrency, 'to' => $toCurrency)));*/
 
         $result = $CurrencyConverter->find('all')
-            ->where(['from' => $fromCurrency, 'to' => $toCurrency ]);
+            ->where(['fromCurrency' => $fromCurrency, 'toCurrency' => $toCurrency ]);
 
         foreach ($result as $row){
             $find = 1;
@@ -121,8 +121,8 @@ class CurrencyConverterComponent extends Component
                 $rate = $this->_getRates($fromCurrency, $toCurrency);
 
                 $data = [
-                    'from'        => $fromCurrency,
-                    'to'          => $toCurrency,
+                    'fromCurrency'        => $fromCurrency,
+                    'toCurrency'          => $toCurrency,
                     'rates'       => $rate,
                     'modified'    => date('Y-m-d H:i:s'),
                 ];
@@ -178,8 +178,8 @@ class CurrencyConverterComponent extends Component
 
         $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
           `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-          `from` varchar(5) NOT NULL,
-          `to` varchar(5) NOT NULL,
+          `fromCurrency` varchar(5) NOT NULL,
+          `toCurrency` varchar(5) NOT NULL,
           `rates` varchar(10) NOT NULL,
           `created` datetime NOT NULL,
           `modified` datetime NOT NULL,
