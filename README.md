@@ -42,7 +42,7 @@ _[Composer]_
 * Inside your application folder
 * Execute
 ```bash
-$ composer require "alessandrominoccheri/cakephp-currency-converter:3.0.*@dev"
+$ composer require "alessandrominoccheri/cakephp-currency-converter"
 ```
 
 _[Manual]_
