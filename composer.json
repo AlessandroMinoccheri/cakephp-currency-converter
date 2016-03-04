@@ -37,8 +37,7 @@
   },
   "autoload": {
     "psr-4": {
-        "App\\": "src",
-        "CurrencyConverter\\": "./plugins/CurrencyConverter/src"
+        "AlessandroMinoccheru\\CurrencyConverter\\": "src"
     }
   }
 }
