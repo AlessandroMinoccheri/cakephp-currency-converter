@@ -37,7 +37,7 @@
   },
   "autoload": {
     "psr-4": {
-        "AlessandroMinoccheru\\CurrencyConverter\\": "src"
+        "CurrencyConverter\\": "src"
     }
   }
 }
