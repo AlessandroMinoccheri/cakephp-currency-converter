@@ -58,7 +58,7 @@ before_script:
   - cp phpunit.xml.dist phpunit.xml
 
 script:
-  - if [[ $COVERAGE = 1  ]]; then export CODECOVERAGE=1; vendor/bin/phpunit --coverage-clover=clover.xml; fi
+  - if [[ $COVERAGE = 1  ]]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi
   - if [[ $COVERAGE = 1 ]]; then vendor/bin/phpunit; fi
 
 after_success:
