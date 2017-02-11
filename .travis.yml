@@ -58,12 +58,11 @@ before_script:
   - cp phpunit.xml.dist phpunit.xml
 
 script:
-  - sh -c "if [ '$COVERAGE' = '1' ]; then phpunit --coverage-clover=clover.xml || true; fi"
-  - sh -c "if [ '$COVERAGE' = '1' ]; then wget -O codecov.sh https://codecov.io/bash; fi"
-  - sh -c "if [ '$COVERAGE' = '1' ]; then bash codecov.sh; fi"
+    - sh -c "if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]]; then export CODECOVERAGE=1; phpunit --coverage-clover=clover.xml; fi
+    - sh -c "if [[ '$DEFAULT' = '1' && ''$TRAVIS_PHP_VERSION' != '7.0' ]]; then phpunit; fi
 
 after_success:
-  - if [[ $COVERAGE = 1 ]]; then bash <(curl -s https://codecov.io/bash); fi
+    - if [[ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]]; then bash <(curl -s https://codecov.io/bash) -t c2902580-b93e-4fc4-ad96-cfa681c99845; fi
 
 notifications:
   email: false
