@@ -31,19 +31,13 @@ matrix:
       env: PHPCS=1 DEFAULT=0
 
     - php: 5.4
-      env: TEST=1 DEFAULT=0
-
-    - php: 5.5
-       env: TEST=1
-
-    - php: 5.6
-       env: TEST=1
+      env: COVERALLS=1 DEFAULT=0
 
     - php: 7.0
-      env: TEST=1
+      env: PHPCS=1
 
     - php: 7.0
-       env: TEST=1 COVERAGE=1
+      env: PHPCS=1 COVERAGE=1
 
 before_script:
   - composer self-update
