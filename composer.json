@@ -3,14 +3,14 @@
   "type": "cakephp-plugin",
   "description": "A CakePHP plugin to convert your price from a currency to another",
   "keywords": [
-    "cakephp", 
-    "component", 
-    "currency", 
-    "plugin", 
-    "converter", 
-    "money", 
-    "finance", 
-    "euro", 
+    "cakephp",
+    "component",
+    "currency",
+    "plugin",
+    "converter",
+    "money",
+    "finance",
+    "euro",
     "dollar",
     "cakephp3",
     "plugin",
@@ -29,8 +29,13 @@
   ],
     "require": {
       "php": ">=5.4.0",
+      "cakephp/cakephp": ">=3.0.0 <4.0.0",
       "ext-curl": "*",
       "composer/installers": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "cakephp/cakephp-codesniffer": "dev-master"
     },
     "extra": {
     "installer-name": "CurrencyConverter"
