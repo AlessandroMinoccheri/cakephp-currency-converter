@@ -58,9 +58,9 @@ before_script:
   - cp phpunit.xml.dist phpunit.xml
 
 script:
-
-  - if [[ $COVERAGE = 1 ]]; then phpunit --coverage-clover=clover.xml; fi
-  - if [[ $COVERAGE = 1 ]]; then phpunit; fi
+  - sh -c "if [ '$COVERAGE' = '1' ]; then phpunit --coverage-clover=clover.xml || true; fi"
+  - sh -c "if [ '$COVERAGE' = '1' ]; then wget -O codecov.sh https://codecov.io/bash; fi"
+  - sh -c "if [ '$COVERAGE' = '1' ]; then bash codecov.sh; fi"
 
 after_success:
   - if [[ $COVERAGE = 1 ]]; then bash <(curl -s https://codecov.io/bash); fi
