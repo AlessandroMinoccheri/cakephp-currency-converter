@@ -1,38 +1,43 @@
 {
-    "name"        : "cakephp-currency-converter",
-    "version"     : "2.0.3",
-    "description" : "A CakePHP plugin to convert your price from a currency to another currency",
-    "authors"     : [
-        {
-            "name"  : "Alessandro Minoccheri",
-            "email" : "alessandro.minoccheri@gmail.com"
-        }
-    ],
-    "license"  : "MIT",
-    "homepage" : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
-    "keywords" : [
-        "cakephp",
-        "cakephp3",
-        "currency",
-        "money",
-        "converter",
-        "euro",
-        "dollar",
-        "finance",
-        "yahoo",
-        "plugin",
-        "component",
-        "exchange"
-    ],
-    "repository" : {
-        "type" : "git",
-        "url"  : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git"
-    },
-    "scripts": {
-        "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
-        "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
-    },
-    "bugs" : {
-        "url" : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter/issues"
+  "name": "cakephp-currency-converter",
+  "version": "2.0.3",
+  "description": "A CakePHP plugin to convert your price from a currency to another currency",
+  "authors": [
+    {
+      "name": "Alessandro Minoccheri",
+      "email": "alessandro.minoccheri@gmail.com"
     }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
+  "keywords": [
+    "cakephp",
+    "cakephp3",
+    "currency",
+    "money",
+    "converter",
+    "euro",
+    "dollar",
+    "finance",
+    "yahoo",
+    "plugin",
+    "component",
+    "exchange"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git"
+  },
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+  },
+  "bugs": {
+    "url": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter/issues"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.16",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0"
+  }
 }
