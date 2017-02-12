@@ -63,6 +63,6 @@ script:
 
 after_success:
     - if [ $DEFAULT = 1 && $TRAVIS_PHP_VERSION = 7.0 ]; then bash <(curl -s https://codecov.io/bash) -t c2902580-b93e-4fc4-ad96-cfa681c99845; fi
-
+    - npm run coveralls
 notifications:
   email: false

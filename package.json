@@ -28,6 +28,10 @@
         "type" : "git",
         "url"  : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git"
     },
+    "scripts": {
+        "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
+        "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+    },
     "bugs" : {
         "url" : "https://github.com/AlessandroMinoccheri/cakephp-currency-converter/issues"
     }
