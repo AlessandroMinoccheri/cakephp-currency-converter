@@ -11,7 +11,7 @@ A CakePHP plugin to convert your price from a currency to another currency
 
 ---
 
-##Background
+## Background
 
 Is very frequently that inside your sites you need to convert your price from a currency to another currency.
 This library convert your price in every currency of the world.
@@ -26,7 +26,7 @@ If you haven't set to use database, instead, every time you call the library it 
 
 ---
 
-##Requirements
+## Requirements
 
 * CakePHP 3.x
 * PHP 5.x
@@ -35,13 +35,14 @@ For cakephp 2.x you can download version 1.1.4
 
 ---
 
-#Installation
+# Installation
 To install the plugin inside your cakephp project you can do this:
 
 _[Composer]_
 * Open your console
 * Inside your application folder
 * Execute
+
 ```bash
 $ composer require "alessandrominoccheri/cakephp-currency-converter"
 ```
@@ -56,15 +57,17 @@ _[Manual]_
 _[GIT Clone]_
 
 In your `Plugin` directory type:
+
 ```bash
 $ git clone https://github.com/AlessandroMinoccheri/cakephp-currency-converter.git CurrencyConverter
 ```
 
 ---
 
-##Enable plugin
+## Enable plugin
 
 In cakephp 3.x you need to enable the plugin your config/bootstrap.php file:
+
 ```
 Plugin::load('CurrencyConverter');
 ```
@@ -78,8 +81,10 @@ Plugin::load('CurrencyConverter', ['autoload' => true]);
 If you are already using Plugin::loadAll();, then this is not necessary.
 
 ---
-#Usage
+
+# Usage
 To convert your price form your controller you need to load the plugin (view section Enable plugin) and type something like this:
+
 ```
 $price = $this->CurrencyConverter->convert('GBP', 'EUR', '2100,00', 1, 1);
 ```
@@ -99,9 +104,11 @@ https://github.com/AlessandroMinoccheri/cakephp-currency-converter/issues/1#issu
 Try to give 777 to the plugin folder
 
 ---
-#Params
+
+# Params
 
 The function declaration to retrieve your converted price is:
+
 ```
 function convert($from_currency, $to_currency, $amount, $save_into_db = 1, $hour_difference = 1)
 ```
@@ -118,7 +125,7 @@ For cakephp 2.x you can download version 1.1.4
 
 ---
 
-##License
+## License
 
 The MIT License (MIT)
 
