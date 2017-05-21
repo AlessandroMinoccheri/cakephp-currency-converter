@@ -9,6 +9,7 @@ use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\I18n\I18n;
+use Cake\Datasource\ConnectionManager;
 
 require_once 'vendor/autoload.php';
 
@@ -67,6 +68,31 @@ Cache::config([
         'prefix' => 'default_',
         'serialize' => true
     ],
+]);
+
+if (!getenv('db_class')) {
+    putenv('db_class=Cake\Database\Driver\Sqlite');
+    putenv('db_dsn=sqlite:tests/test.db');
+}
+
+ConnectionManager::config('default', [
+    'className' => 'Cake\Database\Connection',
+    'driver' => getenv('db_class'),
+    'dsn' => getenv('db_dsn'),
+    'database' => 'test',
+    'username' => '',
+    'password' => '',
+    'timezone' => 'UTC'
+]);
+
+ConnectionManager::config('test', [
+    'className' => 'Cake\Database\Connection',
+    'driver' => getenv('db_class'),
+    'dsn' => getenv('db_dsn'),
+    'database' => 'test',
+    'username' => '',
+    'password' => '',
+    'timezone' => 'UTC'
 ]);
 
 Plugin::load('CurrencyConverter', ['path' => ROOT]);

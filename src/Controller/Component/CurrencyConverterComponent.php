@@ -5,6 +5,7 @@ namespace CurrencyConverter\Controller\Component;
 use Cake\Controller\Component;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
+use Cake\Database\Schema\TableSchema;
 
 class CurrencyConverterComponent extends Component
 {
@@ -40,7 +41,7 @@ class CurrencyConverterComponent extends Component
             }
             
             if($saveIntoDb == 1){
-                $this->_checkIfExistTable($dataSource);
+                $this->checkIfExistTable($dataSource);
 
                 $CurrencyConverter = TableRegistry::get('CurrencyConverter', [
                     'className' => 'CurrencyConverter\Model\Table\CurrencyConvertersTable',
@@ -57,7 +58,7 @@ class CurrencyConverterComponent extends Component
                 }
 
                 if($find == 0){
-                    $rate = $this->_getRates($fromCurrency, $toCurrency);
+                    $rate = $this->getRates($fromCurrency, $toCurrency);
 
                     $data = [
                         'fromCurrency' => $fromCurrency,
@@ -75,7 +76,7 @@ class CurrencyConverterComponent extends Component
                 return number_format((double)$value, 2, '.', '');
             }
             else{
-                $rate = $this->_getRates($fromCurrency, $toCurrency);
+                $rate = $this->getRates($fromCurrency, $toCurrency);
                 $value = (double)$rate * (double)$amount;
                 return number_format((double)$value, 2, '.', '');
             }
@@ -103,9 +104,6 @@ class CurrencyConverterComponent extends Component
             'table' => 'currency_converter'
         ]);
 
-        /*$result = $CurrencyConverter->find('all', array('conditions' => 
-            array('from' => $fromCurrency, 'to' => $toCurrency)));*/
-
         $result = $CurrencyConverter->find('all')
             ->where(['fromCurrency' => $fromCurrency, 'toCurrency' => $toCurrency ]);
 
@@ -118,7 +116,7 @@ class CurrencyConverterComponent extends Component
             $diff = $dStart->diff($dEnd);
 
             if(((int)$diff->y >= 1) || ((int)$diff->m >= 1) || ((int)$diff->d >= 1) || ((int)$diff->h >= $hourDifference) || ((double)$row['CurrencyConverter']['rates'] == 0)){
-                $rate = $this->_getRates($fromCurrency, $toCurrency);
+                $rate = $this->getRates($fromCurrency, $toCurrency);
 
                 $data = [
                     'fromCurrency'        => $fromCurrency,
@@ -147,7 +145,7 @@ class CurrencyConverterComponent extends Component
      * @param string $toCurrency the ending currency that user wants to convert to.
      * @return float the rate of convertion
      */
-    private function _getRates($fromCurrency, $toCurrency){
+    private function getRates($fromCurrency, $toCurrency){
         $url = 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='. $fromCurrency . $toCurrency .'=X';
         $handle = @fopen($url, 'r');
          
@@ -173,18 +171,23 @@ class CurrencyConverterComponent extends Component
      * @param string $dataSource which dataSOurce need to use
      * @return boolean if the table standard currency_converters exist into the database
      */
-    private function _checkIfExistTable($dataSource){
+    private function checkIfExistTable($dataSource){
+        $autoIncrement = 'AUTO_INCREMENT';
+
         $db = ConnectionManager::get($dataSource);
+        $config = $db->config();
+        if (strpos($config['dsn'], 'sqlite') !== false) {
+            $autoIncrement = 'AUTOINCREMENT';
+        }
 
         $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
-          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+          `id` integer PRIMARY KEY   NOT NULL ' . $autoIncrement . ',
           `fromCurrency` varchar(5) NOT NULL,
           `toCurrency` varchar(5) NOT NULL,
           `rates` varchar(10) NOT NULL,
           `created` datetime NOT NULL,
-          `modified` datetime NOT NULL,
-          PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;';
+          `modified` datetime NOT NULL
+        );';
 
         $results = $db->query($sql);
         return $results;
