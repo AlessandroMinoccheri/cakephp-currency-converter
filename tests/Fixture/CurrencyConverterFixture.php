@@ -5,7 +5,8 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class CurrencyConverterFixture extends TestFixture {
     public $connection = 'test';
-
+    public $useDbConfig = 'test';
+    
     public $fields = [
         'id'        => ['type' => 'integer', 'key' => 'primary'],
         'from'      => ['type' => 'string','length' => 255, 'null' => false],
