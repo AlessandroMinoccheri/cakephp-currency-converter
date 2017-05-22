@@ -25,6 +25,8 @@ class CurrencyConverterComponent extends Component
 
     private $rate;
 
+    private $currencyTable;
+
     public function setController($controller)
     {
         $this->controller = $controller;
@@ -67,83 +69,39 @@ class CurrencyConverterComponent extends Component
                 $this->fromCurrency = "GBP";
             }
             
-            if($this->saveIntoDb == 1){
-                $this->ensureIfExistTable();
-
-                $CurrencyConverter = TableRegistry::get('CurrencyConverter', [
+            if($this->saveIntoDb == true){
+                $this->currencyTable = TableRegistry::get('CurrencyConverter', [
                     'className' => 'CurrencyConverter\Model\Table\CurrencyConvertersTable',
                     'table' => 'currency_converter'
                 ]);
-                
-                $arrReturn = $this->updateDatabaseIfNecessary();
-                
-                if(isset($arrReturn['find'])){
-                    $find = $arrReturn['find'];
-                }
 
-                if(isset($arrReturn['rate'])){
-                    $this->rate = $arrReturn['rate'];
-                }
-
-                if($find == 0){
-                    $this->rate = $this->getRates();
-
-                    $data = [
-                        'fromCurrency' => $this->fromCurrency,
-                        'toCurrency'   => $this->toCurrency,
-                        'rates'        => $this->rate,
-                        'created'      => date('Y-m-d H:i:s'),
-                        'modified'     => date('Y-m-d H:i:s'),
-                    ];
-
-                    $entity = $CurrencyConverter->newEntity($data);
-                    $CurrencyConverter->save($entity);
-                }
+                $this->ensureIfExistTable();
+                $this->saveIntoDatabase();
 
                 $value = (double)$this->rate * (double)$this->amount;
                 
                 return number_format((double)$value, 2, '.', '');
             }
-            else{
-                $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
-                $value = (double)$this->rate * (double)$this->amount;
+            
+            $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
+            $value = (double)$this->rate * (double)$this->amount;
                 
-                return number_format((double)$value, 2, '.', '');
-            }
+            return number_format((double)$value, 2, '.', '');
         }
         
         return number_format((double)$this->amount, 2, '.', '');
     }
 
-    /**
-     * Convertion function call to yahoo finance api
-     *
-     * @param string $fromCurrency the starting currency that user wants to convert to.
-     * @param string $toCurrency the ending currency that user wants to convert to.
-     * @param int $hourDifference the hour difference to check if the last convertion is passed, if yes make a new call to yahoo finance api.
-     * @return int if it's finded value
-     */
-    public function updateDatabaseIfNecessary() {
-        $arrReturn = array();
-        $find = 0;
-        $rate = 0;
-
-        $currencyTable = TableRegistry::get('CurrencyConverter', [
-            'className' => 'CurrencyConverter\Model\Table\CurrencyConvertersTable',
-            'table' => 'currency_converter'
-        ]);
-
-        $query = $currencyTable->find('all')
+    private function saveIntoDatabase()
+    {
+        $query = $this->currencyTable->find('all')
             ->where(['fromCurrency' => $this->fromCurrency, 'toCurrency' => $this->toCurrency ]);
 
         $query->hydrate(false);
         $result =  $query->toArray();
 
         foreach ($result as $row){
-            $find = 1;
             $lastUpdated = str_replace(',', '', $row['modified']);
-            $lastUpdated = str_replace('(', '', $lastUpdated);
-            $lastUpdated = str_replace(')', '', $lastUpdated);
             $lastUpdated = str_replace('/', '-', $lastUpdated);
             $now = date('Y-m-d H:i:s');
             $dStart = new \DateTime($now);
@@ -151,29 +109,47 @@ class CurrencyConverterComponent extends Component
             $diff = $dStart->diff($dEnd);
 
             if ($this->ensureNeedToUpdateDatabase($diff, $row)) {
-                $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
-
-                $data = [
-                    'fromCurrency'        => $this->fromCurrency,
-                    'toCurrency'          => $this->toCurrency,
-                    'rates'       => $this->rate,
-                    'modified'    => date('Y-m-d H:i:s'),
-                ];
-
-                $entity = $currencyTable->get($row['id']); 
-                $currencyTable->patchEntity($entity, $data);
-
-                $currencyTable->save($entity);
-            }
-            else{
-                $this->rate = $row['CurrencyConverter']['rates'];
+                $this->updateDatabase($row);
+            } else {
+                $this->rate = $row['rates'];
             }
         }
 
-        $arrReturn['find'] = $find;
-        $arrReturn['rate'] = $this->rate;
+        if (count($result) <= 0) {
+            $this->insertIntoDatabase();
+        }
+    }
 
-        return $arrReturn;
+    private function updateDatabase($row)
+    {
+        $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
+
+        $data = [
+            'fromCurrency'=> $this->fromCurrency,
+            'toCurrency'  => $this->toCurrency,
+            'rates'       => $this->rate,
+            'modified'    => date('Y-m-d H:i:s'),
+        ];
+
+        $entity = $this->currencyTable->get($row['id']); 
+        $this->currencyTable->patchEntity($entity, $data);
+        $this->currencyTable->save($entity);
+    }
+
+    private function insertIntoDatabase()
+    {
+        $this->rate = $this->getRates();
+
+        $data = [
+            'fromCurrency' => $this->fromCurrency,
+            'toCurrency'   => $this->toCurrency,
+            'rates'        => $this->rate,
+            'created'      => date('Y-m-d H:i:s'),
+            'modified'     => date('Y-m-d H:i:s'),
+        ];
+
+        $entity = $this->currencyTable->newEntity($data);
+        $this->currencyTable->save($entity);
     }
 
     private function ensureNeedToUpdateDatabase($diff, $row)
@@ -187,13 +163,6 @@ class CurrencyConverterComponent extends Component
         );
     }
 
-    /**
-     * Convertion function call to yahoo finance api
-     *
-     * @param string $fromCurrency the starting currency that user wants to convert to.
-     * @param string $toCurrency the ending currency that user wants to convert to.
-     * @return float the rate of convertion
-     */
     private function getRates(){
         $url = 'http://finance.yahoo.com/d/quotes.csv?e=.csv&f=sl1d1t1&s='. $this->fromCurrency . $this->toCurrency .'=X';
         $handle = @fopen($url, 'r');
@@ -211,12 +180,6 @@ class CurrencyConverterComponent extends Component
         return $this->rate = 0;
     }
 
-    /**
-     * Convertion function call to yahoo finance api
-     * 
-     * @param string $dataSource which dataSOurce need to use
-     * @return boolean if the table standard currency_converters exist into the database
-     */
     private function ensureIfExistTable(){
         $autoIncrement = 'AUTO_INCREMENT';
 
