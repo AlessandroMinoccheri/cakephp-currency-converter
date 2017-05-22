@@ -51,7 +51,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $fromCurrency   = 'EUR';
         $toCurrency     = 'GBP';
         $amount         = '20,00';
-        $saveIntoDb     = 1;
+        $saveIntoDb     = true;
         $hourDifference = 1;
         $dataSource     = 'test';
 
@@ -75,7 +75,6 @@ class CurrencyConverterComponentTest extends TestCase {
     public function tearDown()
     {
         parent::tearDown();
-        // Clean up after we're done
         unset($this->CurrencyConverter, $this->controller);
     }
 }
