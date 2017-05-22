@@ -181,7 +181,7 @@ class CurrencyConverterComponent extends Component
         }
 
         $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
-          `id` integer PRIMARY KEY   NOT NULL ' . $autoIncrement . ',
+          `id` integer PRIMARY KEY ' . $autoIncrement . ',
           `fromCurrency` varchar(5) NOT NULL,
           `toCurrency` varchar(5) NOT NULL,
           `rates` varchar(10) NOT NULL,
