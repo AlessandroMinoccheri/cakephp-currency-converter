@@ -86,7 +86,7 @@ If you are already using Plugin::loadAll();, then this is not necessary.
 To convert your price form your controller you need to load the plugin (view section Enable plugin) and type something like this:
 
 ```
-$price = $this->CurrencyConverter->convert('GBP', 'EUR', '2100,00', 1, 1);
+$price = $this->CurrencyConverter->convert('GBP', 'EUR', '2100,00', true, 1);
 ```
 
 With this call you have inside variable "price" the new price converter from GBP to EUR.
