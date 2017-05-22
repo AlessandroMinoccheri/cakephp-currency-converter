@@ -6,3 +6,4 @@ composer.lock
 node_modules
 test
 tests/test.db
+web/

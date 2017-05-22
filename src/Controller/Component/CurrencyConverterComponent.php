@@ -78,15 +78,12 @@ class CurrencyConverterComponent extends Component
                 $this->ensureIfExistTable();
                 $this->saveIntoDatabase();
 
-                $value = (double)$this->rate * (double)$this->amount;
-                
-                return number_format((double)$value, 2, '.', '');
+                return $this->calculateValue();
             }
             
             $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
-            $value = (double)$this->rate * (double)$this->amount;
-                
-            return number_format((double)$value, 2, '.', '');
+
+            return $this->calculateValue();
         }
         
         return number_format((double)$this->amount, 2, '.', '');
@@ -172,8 +169,8 @@ class CurrencyConverterComponent extends Component
             fclose($handle);
         }
 
-        if(isset($result)){
-            $allData = explode(',', $result); /* Get all the contents to an array */
+        if (isset($result)) {
+            $allData = explode(',', $result);
             return $allData[1];
         }
         
@@ -200,5 +197,11 @@ class CurrencyConverterComponent extends Component
         );';
 
         return $db->query($sql);
+    }
+
+    private function calculateValue()
+    {
+        $value = (double)$this->rate * (double)$this->amount;
+        return number_format((double)$value, 2, '.', '');
     }
 }
