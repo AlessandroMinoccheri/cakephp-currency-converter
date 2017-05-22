@@ -9,8 +9,6 @@ use Cake\Database\Schema\TableSchema;
 
 class CurrencyConverterComponent extends Component
 {
-    public $controller = null;
-
     private $fromCurrency;
 
     private $toCurrency;
@@ -26,16 +24,6 @@ class CurrencyConverterComponent extends Component
     private $rate;
 
     private $currencyTable;
-
-    public function setController($controller)
-    {
-        $this->controller = $controller;
-    }
-
-    public function startup($event)
-    {
-        $this->setController($event->subject());
-    }
 
     /**
      * Convertion function
@@ -65,9 +53,7 @@ class CurrencyConverterComponent extends Component
         $this->rate = 0;
 
         if($this->fromCurrency != $this->toCurrency){
-            if ($this->fromCurrency == "PDS"){
-                $this->fromCurrency = "GBP";
-            }
+            $this->fixFromToCurrency();
             
             if($this->saveIntoDb == true){
                 $this->currencyTable = TableRegistry::get('CurrencyConverter', [
@@ -87,6 +73,17 @@ class CurrencyConverterComponent extends Component
         }
         
         return number_format((double)$this->amount, 2, '.', '');
+    }
+
+    private function fixFromToCurrency()
+    {
+        if ($this->fromCurrency == "PDS"){
+            $this->fromCurrency = "GBP";
+        }
+
+        if ($this->toCurrency == "PDS"){
+            $this->toCurrency = "GBP";
+        }
     }
 
     private function saveIntoDatabase()
