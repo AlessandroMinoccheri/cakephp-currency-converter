@@ -96,10 +96,10 @@ class CurrencyConverterComponent extends Component
 
         foreach ($result as $row){
             $lastUpdated = $row['modified'];
+
             $now = date('Y-m-d H:i:s');
             $dStart = new \DateTime($now);
-            $dEnd = new \DateTime(strtotime($lastUpdated));
-            $diff = $dStart->diff($dEnd);
+            $diff = $dStart->diff($lastUpdated);
 
             if ($this->ensureNeedToUpdateDatabase($diff, $row)) {
                 $this->updateDatabase($row);
