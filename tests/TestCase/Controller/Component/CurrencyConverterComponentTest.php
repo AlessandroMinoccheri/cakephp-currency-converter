@@ -18,7 +18,7 @@ class CurrencyConverterComponentTest extends TestCase {
     {
         parent::setUp();
 
-        $this->CurrencyConverter = new CurrencyConverterComponent(new ComponentRegistry(new Controller));
+        $this->currencyConverter = new CurrencyConverterComponent(new ComponentRegistry(new Controller));
     }
 
     public function testAmountWithComma()
@@ -30,7 +30,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 0;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertGreaterThan((float)$result, (float)$amount);
     }
 
@@ -43,7 +43,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 0;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertGreaterThan($result, $amount);
     }
 
@@ -56,7 +56,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 1;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertGreaterThan($result, $amount);
     }
 
@@ -69,7 +69,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 1;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertGreaterThan($result, $amount);
     }
 
@@ -82,7 +82,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 1;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertGreaterThan($result, $amount);
     }
 
@@ -95,7 +95,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 1;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertGreaterThan($amount, $result);
     }
 
@@ -108,7 +108,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = 1;
         $dataSource     = 'test';
 
-        $result = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $result = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
         $this->assertEquals($result, $amount);
     }
 
@@ -135,7 +135,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $hourDifference = -1;
         $dataSource     = 'test';
 
-        $resultConverted = $this->CurrencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
+        $resultConverted = $this->currencyConverter->convert($fromCurrency, $toCurrency, $amount, $saveIntoDb, $hourDifference, $dataSource);
 
         $currencyTable = TableRegistry::get('CurrencyConverter');
         $query = $currencyTable->find('all');
@@ -150,6 +150,6 @@ class CurrencyConverterComponentTest extends TestCase {
     public function tearDown()
     {
         parent::tearDown();
-        unset($this->CurrencyConverter, $this->controller);
+        unset($this->currencyConverter, $this->controller);
     }
 }

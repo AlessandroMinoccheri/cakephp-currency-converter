@@ -95,11 +95,10 @@ class CurrencyConverterComponent extends Component
         $result =  $query->toArray();
 
         foreach ($result as $row){
-            $lastUpdated = str_replace(',', '', $row['modified']);
-            $lastUpdated = str_replace('/', '-', $lastUpdated);
+            $lastUpdated = $row['modified'];
             $now = date('Y-m-d H:i:s');
             $dStart = new \DateTime($now);
-            $dEnd = new \DateTime(trim($lastUpdated, '"'));
+            $dEnd = new \DateTime(strtotime($lastUpdated));
             $diff = $dStart->diff($dEnd);
 
             if ($this->ensureNeedToUpdateDatabase($diff, $row)) {
@@ -153,7 +152,7 @@ class CurrencyConverterComponent extends Component
             ((int)$diff->m >= 1) || 
             ((int)$diff->d >= 1) || 
             ((int)$diff->h >= $this->hourDifference) || 
-            ((double)$row['CurrencyConverter']['rates'] == 0)
+            ((double)$row['rates'] == 0)
         );
     }
 
