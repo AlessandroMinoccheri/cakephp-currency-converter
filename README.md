@@ -1,6 +1,8 @@
-cakephp-currency-converter V 2.0.3
+cakephp-currency-converter V 2.1.0
 ==============================
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AlessandroMinoccheri/cakephp-currency-converter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AlessandroMinoccheri/cakephp-currency-converter/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/AlessandroMinoccheri/cakephp-currency-converter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AlessandroMinoccheri/cakephp-currency-converter/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/v/stable.svg)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
 [![Coverage Status](https://coveralls.io/repos/github/AlessandroMinoccheri/cakephp-currency-converter/badge.svg?branch=master)](https://coveralls.io/github/AlessandroMinoccheri/cakephp-currency-converter?branch=master)
 [![License](https://poser.pugx.org/alessandrominoccheri/cakephp-currency-converter/license.svg)](https://packagist.org/packages/alessandrominoccheri/cakephp-currency-converter)
