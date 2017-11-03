@@ -17,13 +17,13 @@ A CakePHP plugin to convert your price from a currency to another currency
 Is very frequently that inside your sites you need to convert your price from a currency to another currency.
 This library convert your price in every currency of the world.
 
-It works with yahoo finance api and can store currency rates inside a database if you would like.
-You can configure time updates to get new convertion from yahoo finances, if you don't want to use database, rates are updated every time with the current conversion.
+It works with [fixer.io](http://fixer.io/) and can store currency rates inside a database if you would like.
+You can configure time updates to get new conversion from fixer.io, if you don't want to use database, rates are updated every time with the current conversion.
 
-If you have set to use database, for example, you can set to update currency rates every hour, this library get the currency conversion from yahoo finance the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
+If you have set to use database, for example, you can set to update currency rates every hour, this library get the currency conversion from fixer.io the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
 In this way reduce the request time to convert and every hour currency rates are updated.
 
-If you haven't set to use database, instead, every time you call the library it makes a request to yahoo api and gets the actual conversion rate. This solution is great if you haven't a lot of request. Instead, if you have a lot of request  convertions is better to use the database configuration.
+If you haven't set to use database, instead, every time you call the library it makes a request to fixer.io and gets the actual conversion rate. This solution is great if you haven't a lot of request. Instead, if you have a lot of request  conversions is better to use the database configuration.
 
 ---
 
@@ -118,7 +118,7 @@ function convert($from_currency, $to_currency, $amount, $save_into_db = 1, $hour
 * **to_currency:** is the currency that you want to convert your price (Example: EUR, GBP)
 * **amount:** is the price to convert (Example: 200,20)
 * **save_into_db:** is the variable that configure to use the database or not, if not hour_difference params is escaped
-* **hour_difference:** is the hour difference to update your currency conversion. For example if you have set to update currency rates every hour, this library get the currency conversion from yahoo finance the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
+* **hour_difference:** is the hour difference to update your currency conversion. For example if you have set to update currency rates every hour, this library get the currency conversion from fixer.io the first time, store it inside the database and for the next hour it takes conversion rates from the database if exist.
 
 ---
 
