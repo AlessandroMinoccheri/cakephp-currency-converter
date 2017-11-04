@@ -1,4 +1,4 @@
-cakephp-currency-converter V 2.2.0
+cakephp-currency-converter V 2.2.1
 ==============================
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AlessandroMinoccheri/cakephp-currency-converter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AlessandroMinoccheri/cakephp-currency-converter/?branch=master)
