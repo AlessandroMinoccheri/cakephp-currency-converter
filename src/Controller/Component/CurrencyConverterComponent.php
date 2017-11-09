@@ -47,15 +47,15 @@ class CurrencyConverterComponent extends Component
         $this->fromCurrency = $fromCurrency;
         $this->toCurrency = $toCurrency;
         $this->amount = $amount;
-        $this->saveIntoDb = $saveIntoDb;
+        $this->saveIntoDb = (bool)$saveIntoDb;
         $this->hourDifference = $hourDifference;
         $this->dataSource = $dataSource;
         $this->rate = 0;
 
-        if($this->fromCurrency != $this->toCurrency){
+        if ($this->fromCurrency != $this->toCurrency) {
             $this->fixFromToCurrency();
             
-            if($this->saveIntoDb == true){
+            if ($this->saveIntoDb === true) {
                 $this->currencyTable = TableRegistry::get('CurrencyConverter', [
                     'className' => 'CurrencyConverter\Model\Table\CurrencyConvertersTable',
                     'table' => 'currency_converter'
@@ -67,7 +67,7 @@ class CurrencyConverterComponent extends Component
                 return $this->calculateValue();
             }
             
-            $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
+            $this->rate = $this->getRates();
 
             return $this->calculateValue();
         }
@@ -91,7 +91,7 @@ class CurrencyConverterComponent extends Component
         $query = $this->currencyTable->find('all')
             ->where(['fromCurrency' => $this->fromCurrency, 'toCurrency' => $this->toCurrency ]);
 
-        $query->hydrate(false);
+        $query->enableHydration(false);
         $result =  $query->toArray();
 
         foreach ($result as $row){
@@ -115,7 +115,7 @@ class CurrencyConverterComponent extends Component
 
     private function updateDatabase($row)
     {
-        $this->rate = $this->getRates($this->fromCurrency, $this->toCurrency);
+        $this->rate = $this->getRates();
 
         $data = [
             'fromCurrency'=> $this->fromCurrency,
@@ -156,7 +156,8 @@ class CurrencyConverterComponent extends Component
         );
     }
 
-    private function getRates(){
+    private function getRates()
+    {
         $url = 'http://api.fixer.io/latest?base=' . $this->fromCurrency . '&symbols=' . $this->toCurrency;
 
         $handle = @fopen($url, 'r');
@@ -177,7 +178,8 @@ class CurrencyConverterComponent extends Component
         return $this->rate = 0;
     }
 
-    private function ensureIfExistTable(){
+    private function ensureIfExistTable()
+    {
         $autoIncrement = 'AUTO_INCREMENT';
 
         $db = ConnectionManager::get($this->dataSource);

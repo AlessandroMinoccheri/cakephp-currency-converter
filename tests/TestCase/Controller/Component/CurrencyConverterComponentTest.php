@@ -121,7 +121,6 @@ class CurrencyConverterComponentTest extends TestCase {
 
         $query = $currencyTable->find('all');
 
-        $query->hydrate(false);
         $result =  $query->toArray();
 
         foreach ($result as $row){
@@ -140,7 +139,7 @@ class CurrencyConverterComponentTest extends TestCase {
         $currencyTable = TableRegistry::get('CurrencyConverter');
         $query = $currencyTable->find('all');
 
-        $query->hydrate(false);
+        $query->enableHydration(false);
         $result =  $query->toArray();
 
         $this->assertEquals(1, count($result));
