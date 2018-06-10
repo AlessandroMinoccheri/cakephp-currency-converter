@@ -158,8 +158,7 @@ class CurrencyConverterComponent extends Component
 
     private function getRates()
     {
-        $url = 'http://api.fixer.io/latest?base=' . $this->fromCurrency . '&symbols=' . $this->toCurrency;
-
+        $url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $this->fromCurrency . '_' . $this->toCurrency . '&compact=ultra' ;
         $handle = @fopen($url, 'r');
 
         if ($handle) {
@@ -167,15 +166,18 @@ class CurrencyConverterComponent extends Component
             fclose($handle);
         }
 
-        if (isset($result)) {
-            $conversion = json_decode($result, true);
-
-            if (isset($conversion['rates'][$this->toCurrency])) {
-                return $conversion['rates'][$this->toCurrency];
-            }
+        if (!isset($result)) {
+            return $this->rate = 0;
         }
-        
-        return $this->rate = 0;
+
+        $conversion = json_decode($result, true);
+        $key = $this->fromCurrency . '_' . $this->toCurrency;
+
+        if (!isset($conversion[$key])) {
+            return $this->rate = 0;
+        }
+
+        return $conversion[$this->fromCurrency . '_' . $this->toCurrency];
     }
 
     private function ensureIfExistTable()

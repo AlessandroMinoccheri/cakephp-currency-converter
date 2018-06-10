@@ -13,6 +13,8 @@ use Cake\Datasource\ConnectionManager;
 
 require_once 'vendor/autoload.php';
 
+error_reporting(E_WARNING);
+
 // Path constants to a few helpful things.
 define('ROOT', dirname(__DIR__) . DS);
 define('CAKE_CORE_INCLUDE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
@@ -33,7 +35,7 @@ require_once CORE_PATH . 'config/bootstrap.php';
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
 
-Configure::write('debug', true);
+Configure::write('debug', false);
 Configure::write('App', [
     'namespace' => 'App',
     'encoding' => 'UTF-8',
