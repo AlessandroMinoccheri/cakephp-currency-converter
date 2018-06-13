@@ -58,3 +58,20 @@ representing a project or community include using an official project e-mail
 address, posting via an official social media account, or acting as an appointed
 representative at an online or offline event. Representation of a project may be
 further defined and clarified by project maintainers.
+
+## Tests
+
+When you make a commit, before it please run phpunit tests in this way:
+
+```
+./vendor/bin/phpunit
+```
+
+## PHPStan
+
+When you make a commit a good practice before it is to launch phpstan analyzer for your code, please launch this command:
+
+```
+./vendor/bin/phpstan analyse src tests
+```
+
