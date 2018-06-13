@@ -67,11 +67,3 @@ When you make a commit, before it please run phpunit tests in this way:
 ./vendor/bin/phpunit
 ```
 
-## PHPStan
-
-When you make a commit a good practice before it is to launch phpstan analyzer for your code, please launch this command:
-
-```
-./vendor/bin/phpstan analyse src tests
-```
-
