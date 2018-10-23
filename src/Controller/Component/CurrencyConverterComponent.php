@@ -187,8 +187,15 @@ class CurrencyConverterComponent extends Component
         $db = ConnectionManager::get($this->dataSource);
         $config = $db->config();
 
-        if (strpos($config['dsn'], 'sqlite') !== false) {
-            $autoIncrement = 'AUTOINCREMENT';
+
+        if (!isset($config['dsn'])) {
+            if (strpos(strtolower($config['driver']), 'sqlite') !== false) {
+                $autoIncrement = 'AUTOINCREMENT';
+            }
+        } else {
+            if (strpos($config['dsn'], 'sqlite') !== false) {
+                $autoIncrement = 'AUTOINCREMENT';
+            }
         }
 
         $sql = 'CREATE TABLE IF NOT EXISTS `currency_converters` (
