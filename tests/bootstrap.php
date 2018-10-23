@@ -80,21 +80,31 @@ if (!getenv('db_class')) {
 ConnectionManager::config('default', [
     'className' => 'Cake\Database\Connection',
     'driver' => getenv('db_class'),
-    'dsn' => getenv('db_dsn'),
+    'persistent' => true,
+    'host' => 'localhost',
+    'username' => 'my_app',
+    'password' => null,
     'database' => 'test',
-    'username' => '',
-    'password' => '',
-    'timezone' => 'UTC'
+    'schema' => 'public',
+    'port' => 5432,
+    'encoding' => 'utf8',
+    'flags' => [],
+    'init' => [],
 ]);
 
 ConnectionManager::config('test', [
     'className' => 'Cake\Database\Connection',
     'driver' => getenv('db_class'),
-    'dsn' => getenv('db_dsn'),
+    'persistent' => true,
+    'host' => 'localhost',
+    'username' => 'my_app',
+    'password' => null,
     'database' => 'test',
-    'username' => '',
-    'password' => '',
-    'timezone' => 'UTC'
+    'schema' => 'public',
+    'port' => 5432,
+    'encoding' => 'utf8',
+    'flags' => [],
+    'init' => [],
 ]);
 
 Plugin::load('CurrencyConverter', ['path' => ROOT]);
