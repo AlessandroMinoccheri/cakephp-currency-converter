@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS `currencyrates` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `from_currency` varchar(5) NOT NULL,
+    `to_currency` varchar(5) NOT NULL,
+    `rate` varchar(10) NOT NULL,
+    `created` datetime NOT NULL,
+    `modified` datetime NOT NULL,
+    PRIMARY KEY (id)
+);

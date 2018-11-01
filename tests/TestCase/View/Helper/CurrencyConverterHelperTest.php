@@ -1,13 +1,12 @@
 <?php
-namespace CurrencyConverter\Test\TestCase\Controller\Component;
+namespace CurrencyConverter\Test\TestCase\View\Helper;
 
-use CurrencyConverter\Controller\Component\CurrencyConverterComponent;
 use Cake\Controller\Controller;
-use Cake\Controller\ComponentRegistry;
-use Cake\Event\Event;
-use Cake\Http\ServerRequest;
-use Cake\Http\Response;
+use Cake\Network\Request;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
+use Cake\View\View;
+use CurrencyConverter\View\Helper\CurrencyConverterHelper;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
 
@@ -19,66 +18,58 @@ use Cake\I18n\Time;
  *
  *
  */
-class CurrencyConverterComponentTest extends TestCase
-{
+class CurrencyConverterHelperTest extends TestCase {
 
-    public $fixtures = ['plugin.CurrencyConverter.Currencyrates'];
+	public $fixtures = ['plugin.CurrencyConverter.Currencyrates'];
 
-    /**
-     * Component being tested
-     *
-     * @var \CurrencyConverter\Controller\Component\CurrencyConverterComponent
-     */
-    public $CurrencyConverter;
+	/**
+	 * Helper being tested
+	 *
+	 * @var \Ratings\View\Helper\CurrencyConverter
+	 */
+	public $CurrencyConverter;
 
-    /**
-     * @var \Cake\Http\ServerRequest
-     */
-    protected $request;
+	/**
+	 * @var \Cake\Http\ServerRequest
+	 */
+	protected $request;
 
-    /**
-     * @var \Cake\Http\Response
-     */
-    protected $response;
+	/**
+	 * @var \Cake\View\View
+	 */
+	protected $View;
 
-     /**
-     * @var \Cake\Controller\Controller
-     */
-    protected $controller;
+	/**
+	 * @var \Cake\ORM\Table
+	 */
+	protected $Table;
 
-    /**
-     * @var \Cake\Controller\ComponentRegistry
-     */
-    protected $registry;
+	/**
+	 * (non-PHPdoc)
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		parent::setUp();
+		$this->Request = new Request();
+		$this->Controller = new Controller();
+		$this->View = new View($this->Request);
+		$this->CurrencyConverter = new CurrencyConverterHelper($this->View);
 
-    /**
-     * @var \Cake\ORM\Table
-     */
-    protected $Table;
-
-    public function setUp()
-    {
-        // Configuration de notre component et de notre faux controller de test.
-        $this->Request = new ServerRequest();
-        $this->Response = new Response();
-        $this->Controller = new Controller($this->Request, $this->Response);
-        $this->Registry = new ComponentRegistry($this->Controller);
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, []);
-
-        $table = TableRegistry::get('Currencyrates');
+		$table = TableRegistry::get('Currencyrates');
         $this->Table = $table;
-    }
+	}
 
-    public function testConfig()
+	public function testConfig()
     {
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, []);
+        $this->Component = new CurrencyConverterHelper($this->View, []);
         $expected = [
             'database' => 2,
             'refresh' => 24,
             'decimal' => 2,
             'round' => false
         ];
-        $this->assertEquals($expected, $this->CurrencyConverter->getConfig());
+        $this->assertEquals($expected, $this->Component->getConfig());
     }
 
     public function testConvertSameCurrency()
@@ -117,28 +108,28 @@ class CurrencyConverterComponentTest extends TestCase
         $fromCurrency = 'EUR';
         $toCurrency = 'EUR';
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'decimal' => 3
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
         $expected = 20.123;
         $this->assertEquals($expected, $result);
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'round' => 0
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
         $expected = 20.12;
         $this->assertEquals($expected, $result);
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'round' => 4
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
         $expected = 20.25;
         $this->assertEquals($expected, $result);
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'round' => 1
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
@@ -148,7 +139,7 @@ class CurrencyConverterComponentTest extends TestCase
         $amount = 20.00;
         $fromCurrency = 'EUR';
         $toCurrency = 'EUR';
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'round' => 4
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
@@ -158,7 +149,7 @@ class CurrencyConverterComponentTest extends TestCase
         $amount = 20.88;
         $fromCurrency = 'EUR';
         $toCurrency = 'EUR';
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'round' => 4
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
@@ -193,7 +184,7 @@ class CurrencyConverterComponentTest extends TestCase
         $toCurrency = 'GBP';
 
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
-        $expected = number_format(0.8 * 20.00, 2);
+        $expected = round(number_format(0.8 * 20.00, 2), 2);
 
         $this->assertEquals($expected, $result);
     }
@@ -204,7 +195,7 @@ class CurrencyConverterComponentTest extends TestCase
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'refresh' => 0
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
@@ -275,7 +266,7 @@ class CurrencyConverterComponentTest extends TestCase
         $fromCurrency = 'GBP';
         $toCurrency = 'EUR';
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'database' => false
         ]);
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
@@ -321,7 +312,7 @@ class CurrencyConverterComponentTest extends TestCase
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'refresh' => 0
         ]);
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
@@ -388,7 +379,7 @@ class CurrencyConverterComponentTest extends TestCase
         $fromCurrency = 'GBP';
         $toCurrency = 'EUR';
 
-        $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, [
+        $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'database' => false
         ]);
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
@@ -405,6 +396,6 @@ class CurrencyConverterComponentTest extends TestCase
         // Nettoie la Table
         TableRegistry::clear();
         // Nettoie les variables quand les tests sont finis.
-        unset($this->Controller, $this->CurrencyConverter);
+		unset($this->CurrencyConverter);
     }
 }

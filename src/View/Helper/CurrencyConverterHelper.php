@@ -1,19 +1,16 @@
 <?php
-namespace CurrencyConverter\Controller\Component;
+namespace CurrencyConverter\View\Helper;
 
-use Cake\Controller\Component;
-use Cake\Datasource\ConnectionManager;
+use Cake\View\Helper;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
 
 /**
- * CurrencyConverter Component to convert currency.
- *
- * Convert an amount number from one currency to an other currency
- * Return currency rate from one currency to an other
- * output type from HTML to JSON format.
+ * @property \Cake\View\Helper\HtmlHelper $Html
+ * @property \Cake\View\Helper\FormHelper $Form
+ * @property \Cake\View\Helper\NumberHelper $Number
  */
-class CurrencyConverterComponent extends Component
+class CurrencyConverterHelper extends Helper
 {
     /**
      * Using database
