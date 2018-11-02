@@ -49,6 +49,8 @@ $price_converted = $this->CurrencyConverter->convert($price_to_convert, $from, $
 
 To get a available list of currency code you can check here [List of available currency code](https://free.currencyconverterapi.com/api/v6/currencies)
 
+Note: If plugin can't reach rate out from API the converted price will be 0.
+
 ## Get currency rate
 
 You can get a currency rate from a currency to another one in your View. To do it you have to use rate method of the Helper. Assuming you want to get the rate from EUR currency to GBP currency:
@@ -61,3 +63,5 @@ $price_converted = $this->CurrencyConverter->rate($from, $to);
 * **to:** is the currency that you want to convert your price to (Example: EUR, GBP)
 
 To get a available list of currency code you can check here [List of available currency code](https://free.currencyconverterapi.com/api/v6/currencies)
+
+Note: If plugin can't reach rate out from API the rate, rate will be null.

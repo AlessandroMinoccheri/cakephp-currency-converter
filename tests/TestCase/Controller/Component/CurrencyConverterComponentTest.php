@@ -182,7 +182,7 @@ class CurrencyConverterComponentTest extends TestCase
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-USD')['modified'];
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->modified;
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->get('modified')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -194,7 +194,14 @@ class CurrencyConverterComponentTest extends TestCase
 
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
         $expected = number_format(0.8 * 20.00, 2);
+        $this->assertEquals($expected, $result);
 
+        $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP')['rate'];
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
+        $this->assertEquals($expected, $result);
+
+        $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP')['modified'];
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->get('modified')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -217,7 +224,7 @@ class CurrencyConverterComponentTest extends TestCase
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP')['modified'];
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified;
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -234,8 +241,7 @@ class CurrencyConverterComponentTest extends TestCase
         ]);
 
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
-        $rate = 0.15;
-        $expected = number_format($rate * 20.00, 2);
+        $expected = number_format(0.15 * 20.00, 2);
         $this->assertEquals($expected, $result);
     }
 
@@ -245,14 +251,14 @@ class CurrencyConverterComponentTest extends TestCase
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
-        $expired = Time::now()->modify('-5 days')->i18nFormat('yyyy-MM-dd HH:mm:ss');
+        $expiredDatetime = Time::now()->modify('-5 days')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->Request->getSession()->write('CurrencyConverter.EUR-GBP', [
-            'rate' => 0.7,
-            'modified' => $expired
+            'rate' => 0.1,
+            'modified' => $expiredDatetime
         ]);
 
         $entity = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first();
-        $entity->set('modified', $expired);
+        $entity->set('modified', $expiredDatetime);
         $this->Table->save($entity);
 
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
@@ -265,7 +271,7 @@ class CurrencyConverterComponentTest extends TestCase
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP.modified');
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified;
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -301,7 +307,7 @@ class CurrencyConverterComponentTest extends TestCase
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-USD')['modified'];
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->modified;
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->modified->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -312,7 +318,14 @@ class CurrencyConverterComponentTest extends TestCase
 
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
         $expected = 0.8;
+        $this->assertEquals($expected, $result);
 
+        $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP')['rate'];
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
+        $this->assertEquals($expected, $result);
+
+        $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP')['modified'];
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->get('modified')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -333,7 +346,7 @@ class CurrencyConverterComponentTest extends TestCase
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP')['modified'];
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified;
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -362,7 +375,7 @@ class CurrencyConverterComponentTest extends TestCase
 
         $expired = Time::now()->modify('-5 days')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->Request->getSession()->write('CurrencyConverter.EUR-GBP', [
-            'rate' => 0.7,
+            'rate' => 0.1,
             'modified' => $expired
         ]);
 
@@ -371,7 +384,8 @@ class CurrencyConverterComponentTest extends TestCase
         $this->Table->save($entity);
 
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
+        $rate = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
+        $expected = $rate;
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP.rate');
@@ -379,7 +393,7 @@ class CurrencyConverterComponentTest extends TestCase
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP.modified');
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified;
+        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->modified->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
