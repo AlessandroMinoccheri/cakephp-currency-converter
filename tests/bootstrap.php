@@ -1,110 +1,80 @@
 <?php
-/**
- * Test suite bootstrap.
- *
- * @copyright     Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\I18n\I18n;
-use Cake\Datasource\ConnectionManager;
+require dirname(__DIR__) . '/vendor/cakephp/cakephp/src/basics.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-require_once 'vendor/autoload.php';
-
-error_reporting(E_WARNING);
-
-// Path constants to a few helpful things.
-define('ROOT', dirname(__DIR__) . DS);
-define('CAKE_CORE_INCLUDE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
-define('CORE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp' . DS);
-define('CAKE', CORE_PATH . 'src' . DS);
-define('TESTS', ROOT . 'tests');
-define('APP', ROOT . 'tests' . DS . 'test_files' . DS);
-define('APP_DIR', 'test_files');
-define('WEBROOT_DIR', 'webroot');
-define('TMP', sys_get_temp_dir() . DS);
-define('CONFIG', APP . 'config' . DS);
-define('WWW_ROOT', APP);
-define('CACHE', TMP);
-define('LOGS', TMP);
-
-require_once CORE_PATH . 'config/bootstrap.php';
-
-date_default_timezone_set('UTC');
-mb_internal_encoding('UTF-8');
-
-Configure::write('debug', false);
-Configure::write('App', [
-    'namespace' => 'App',
-    'encoding' => 'UTF-8',
-    'base' => false,
-    'baseUrl' => false,
-    'dir' => 'src',
-    'webroot' => 'webroot',
-    'www_root' => APP . 'webroot',
-    'fullBaseUrl' => 'http://localhost',
-    'imageBaseUrl' => 'img/',
-    'jsBaseUrl' => 'js/',
-    'cssBaseUrl' => 'css/',
-    'paths' => [
-        'plugins' => [APP . 'Plugin' . DS],
-        'templates' => [APP . 'Template' . DS]
-    ]
-]);
-
-Cache::config([
-    '_cake_core_' => [
-        'engine' => 'File',
-        'prefix' => 'cake_core_',
-        'serialize' => true
-    ],
-    '_cake_model_' => [
-        'engine' => 'File',
-        'prefix' => 'cake_model_',
-        'serialize' => true
-    ],
-    'default' => [
-        'engine' => 'File',
-        'prefix' => 'default_',
-        'serialize' => true
-    ],
-]);
-
-if (!getenv('db_class')) {
-    putenv('db_class=Cake\Database\Driver\Sqlite');
-    putenv('db_dsn=sqlite:tests/test.db');
+if (!defined('WINDOWS')) {
+    if (DS === '\\' || substr(PHP_OS, 0, 3) === 'WIN') {
+        define('WINDOWS', true);
+    } else {
+        define('WINDOWS', false);
+    }
 }
 
-ConnectionManager::config('default', [
-    'className' => 'Cake\Database\Connection',
-    'driver' => getenv('db_class'),
-    'persistent' => true,
-    'host' => 'localhost',
-    'username' => 'my_app',
-    'password' => null,
-    'database' => 'test',
-    'schema' => 'public',
-    'port' => 5432,
-    'encoding' => 'utf8',
-    'flags' => [],
-    'init' => [],
+define('ROOT', dirname(__DIR__));
+define('TMP', ROOT . DS . 'tmp' . DS);
+define('LOGS', TMP . 'logs' . DS);
+define('CACHE', TMP . 'cache' . DS);
+define('APP', sys_get_temp_dir());
+define('APP_DIR', 'src');
+define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
+define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
+define('CAKE', CORE_PATH . APP_DIR . DS);
+define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
+define('CONFIG', dirname(__FILE__) . DS . 'config' . DS);
+
+Cake\Core\Configure::write('App', [
+    'namespace' => 'App',
+    'encoding' => 'UTF-8'
 ]);
 
-ConnectionManager::config('test', [
+Cake\Core\Configure::write('debug', true);
+
+mb_internal_encoding('UTF-8');
+
+$Tmp = new Cake\Filesystem\Folder(TMP);
+$Tmp->create(TMP . 'cache/models', 0770);
+$Tmp->create(TMP . 'cache/persistent', 0770);
+$Tmp->create(TMP . 'cache/views', 0770);
+
+$cache = [
+    'default' => [
+        'engine' => 'File',
+        'path' => CACHE
+    ],
+    '_cake_core_' => [
+        'className' => 'File',
+        'prefix' => 'crud_myapp_cake_core_',
+        'path' => CACHE . 'persistent/',
+        'serialize' => true,
+        'duration' => '+10 seconds'
+    ],
+    '_cake_model_' => [
+        'className' => 'File',
+        'prefix' => 'crud_my_app_cake_model_',
+        'path' => CACHE . 'models/',
+        'serialize' => 'File',
+        'duration' => '+10 seconds'
+    ]
+];
+
+Cake\Cache\Cache::setConfig($cache);
+
+Cake\Core\Plugin::load('CurrencyConverter', ['path' => ROOT. DS, 'autoload' => true]);
+
+// Ensure default test connection is defined
+if (!getenv('db_class')) {
+    putenv('db_class=Cake\Database\Driver\Sqlite');
+    putenv('db_dsn=sqlite::memory:');
+}
+
+Cake\Datasource\ConnectionManager::setConfig('test', [
     'className' => 'Cake\Database\Connection',
     'driver' => getenv('db_class'),
-    'persistent' => true,
-    'host' => 'localhost',
-    'username' => 'my_app',
-    'password' => null,
-    'database' => 'test',
-    'schema' => 'public',
-    'port' => 5432,
-    'encoding' => 'utf8',
-    'flags' => [],
-    'init' => [],
+    'dsn' => getenv('db_dsn'),
+    'database' => getenv('db_database'),
+    'username' => getenv('db_username'),
+    'password' => getenv('db_password'),
+    'timezone' => 'UTC',
+    'quoteIdentifiers' => true,
+    'cacheMetadata' => true,
 ]);
-
-Plugin::load('CurrencyConverter', ['path' => ROOT]);

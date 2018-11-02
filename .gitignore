@@ -1,9 +1,4 @@
 tmp/*
-!empty
-.DS_Store
-vendor/*
-composer.lock
-node_modules
-test
-tests/test.db
-web/
+/composer.lock
+/vendor
+tests/coverage

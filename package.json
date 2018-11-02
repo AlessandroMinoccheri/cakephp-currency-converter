@@ -14,6 +14,7 @@
     "cakephp",
     "cakephp3",
     "currency",
+    "rate",
     "money",
     "converter",
     "euro",
@@ -21,6 +22,7 @@
     "finance",
     "plugin",
     "component",
+    "helper",
     "exchange"
   ],
   "repository": {

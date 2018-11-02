@@ -20,29 +20,31 @@
   "homepage": "https://github.com/AlessandroMinoccheri/cakephp-currency-converter",
   "license": "MIT",
   "authors": [
-  {
-    "name": "Alessandro Minoccheri",
-    "email": "alessandro.minoccheri@gmail.com",
-    "homepage": "http://alessandrominoccheri.com",
-    "role": "Developer"
-  }
+    {
+      "name": "Alessandro Minoccheri",
+      "email": "alessandro.minoccheri@gmail.com",
+      "homepage": "http://alessandrominoccheri.com",
+      "role": "Developer"
+    }
   ],
-    "require": {
-      "php": ">=5.4.0",
-      "cakephp/cakephp": ">=3.0.0 <4.0.0",
-      "ext-curl": "*",
-      "composer/installers": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "*",
-        "cakephp/cakephp-codesniffer": "dev-master"
-    },
-    "extra": {
-    "installer-name": "CurrencyConverter"
+  "require": {
+    "php": ">=5.6",
+    "cakephp/cakephp": "~3.0"
+  },
+  "require-dev": {
+    "cakephp/cakephp-codesniffer": "dev-master",
+    "phpunit/phpunit": "^5.7.14|^6.0"
   },
   "autoload": {
     "psr-4": {
-        "CurrencyConverter\\": "src"
+      "CurrencyConverter\\": "src",
+      "CurrencyConverter\\Test\\Fixture\\": "tests/Fixture/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CurrencyConverter\\Test\\": "tests/",
+      "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
     }
   }
 }
