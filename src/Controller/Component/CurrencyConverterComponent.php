@@ -208,6 +208,7 @@ class CurrencyConverterComponent extends Component
         if ($result) {
             if ($result->get('modified')->wasWithinLast($this->refresh . ' hours')) {
                 $rate = $result->get('rate');
+                $this->_storeRateInSession($result);
             } else {
                 $rate = $this->_getRateFromAPI($from, $to);
                 if ($rate) {
@@ -240,11 +241,9 @@ class CurrencyConverterComponent extends Component
      */
     private function _storeRateInSession($entity)
     {
-        $this->session->write('CurrencyConverter', [
-            $entity->get('from_currency') . '-' . $entity->get('to_currency') => [
-                'rate' => $entity->get('rate'),
-                'modified' => $entity->get('modified')
-            ]
+        $this->session->write('CurrencyConverter.' . $entity->get('from_currency') . '-' . $entity->get('to_currency'), [
+            'rate' => $entity->get('rate'),
+            'modified' => $entity->get('modified')->i18nFormat('yyyy-MM-dd HH:mm:ss')
         ]);
     }
 
