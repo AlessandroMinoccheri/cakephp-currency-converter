@@ -1,4 +1,5 @@
 <?php
+
 namespace CurrencyConverter\Controller\Component;
 
 use Cake\Controller\Component;
@@ -80,16 +81,13 @@ class CurrencyConverterComponent extends Component
      * @param array $config
      * @return void
      */
-    public function initialize(array $config = []) {
-        $config = $this->getConfig();
+    public function initialize(array $config = [])
+    {
+        $this->database = $this->getConfig('database');
+        $this->refresh = $this->getConfig('refresh');
+        $this->decimal = $this->getConfig('decimal');
+        $this->round = ($this->getConfig('round') !== 0 ? $this->getConfig('round') : false);
 
-        $this->database = $config['database'];
-        $this->refresh = $config['refresh'];
-        $this->decimal = $config['decimal'];
-        $this->round = $config['round'];
-        if ($this->round == 0) {
-            $this->round = false;
-        }
         $this->session = $this->request->getSession();
         $this->currencyratesTable = TableRegistry::get('CurrencyConverter.Currencyrates');
     }
@@ -160,8 +158,8 @@ class CurrencyConverterComponent extends Component
             $n = floor($number);
             $fraction = ($number - $n);
             if ($fraction != 0) {
-                $step = 1/$this->round;
-                $decimal = (((int)($fraction/$step) + 1) * $step);
+                $step = 1 / $this->round;
+                $decimal = (((int)($fraction / $step) + 1) * $step);
                 $number = $n + $decimal;
             }
         }
@@ -172,14 +170,14 @@ class CurrencyConverterComponent extends Component
 
     /**
      * Check session to see if rate exists in.
-     * 
+     *
      * @param  string $from currency to get the rate from.
      * @param  string $to currency to get the rate to.
      * @return float|null $rate.
      */
     private function _getRateFromSession($from, $to)
     {
-        $session = $this->session->read('CurrencyConverter.' . $from . '-' . $to);        
+        $session = $this->session->read('CurrencyConverter.' . $from . '-' . $to);
         if ($session) {
             $modified = new Time($session['modified']);
             if ($modified->wasWithinLast($this->refresh . ' hours')) {
@@ -197,7 +195,7 @@ class CurrencyConverterComponent extends Component
      * if rate exists and has not to be modified, it returns this rate.
      * if rate exists and has to be modified, it call _getRateFromAPI method to get a fresh rate, then update in table and store in session this rate.
      * if rate does not exist, it call _getRateFromAPI to get a fresh rate, then create in table and store this rate.
-     * 
+     *
      * @param  string $from currency to get the rate from
      * @param  string $to currency to get the rate to
      * @return float|null $rate
@@ -235,7 +233,7 @@ class CurrencyConverterComponent extends Component
 
     /**
      * Store in session a rate and his modified datetime
-     * 
+     *
      * @param  \Cake\ORM\Entity $entity
      * @return void
      */
@@ -268,7 +266,7 @@ class CurrencyConverterComponent extends Component
                 $rate = $response[$from . '_' . $to];
             }
         }
-        
+
         return $rate;
     }
 }

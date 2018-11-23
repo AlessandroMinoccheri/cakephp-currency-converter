@@ -78,15 +78,11 @@ class CurrencyConverterHelper extends Helper
      * @return void
      */
     public function initialize(array $config = []) {
-        $config = $this->getConfig();
+        $this->database = $this->getConfig('database');
+        $this->refresh = $this->getConfig('refresh');
+        $this->decimal = $this->getConfig('decimal');
+        $this->round = ($this->getConfig('round') !== 0 ? $this->getConfig('round') : false);
 
-        $this->database = $config['database'];
-        $this->refresh = $config['refresh'];
-        $this->decimal = $config['decimal'];
-        $this->round = $config['round'];
-        if ($this->round == 0) {
-            $this->round = false;
-        }
         $this->session = $this->request->getSession();
         $this->currencyratesTable = TableRegistry::get('CurrencyConverter.Currencyrates');
     }

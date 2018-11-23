@@ -2,7 +2,7 @@
 namespace CurrencyConverter\Test\TestCase\View\Helper;
 
 use Cake\Controller\Controller;
-use Cake\Network\Request;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
@@ -11,12 +11,7 @@ use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
 
 /**
- *
- *
- * BEFORE TESTTING MAKE SURE
- * TO WRITE CURRENT DATETIME INTO THE FIRST RECORDS OF CurrencyratesFixture in tests/Fixture/CurrencyratesFixture
- *
- *
+ * CurrencyConverterHelper Test.
  */
 class CurrencyConverterHelperTest extends TestCase {
 
@@ -45,13 +40,11 @@ class CurrencyConverterHelperTest extends TestCase {
 	protected $Table;
 
 	/**
-	 * (non-PHPdoc)
-	 *
 	 * @return void
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->Request = new Request();
+		$this->Request = new ServerRequest();
 		$this->Controller = new Controller();
 		$this->View = new View($this->Request);
 		$this->CurrencyConverter = new CurrencyConverterHelper($this->View);
@@ -60,11 +53,19 @@ class CurrencyConverterHelperTest extends TestCase {
         $this->Table = $table;
 	}
 
+    /**
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
+
 	public function testConfig()
     {
         $this->CurrencyConverter = new CurrencyConverterHelper($this->View, []);
         $expected = [
-            'database' => 2,
+            'database' => true,
             'refresh' => 24,
             'decimal' => 2,
             'round' => false
@@ -179,6 +180,11 @@ class CurrencyConverterHelperTest extends TestCase {
 
     public function testConvertUsingDatabaseWhenRateExistInDatabaseAndNoNeedToBeUpdated()
     {
+        $rate = $this->Table->find('all')->first();
+        $time = new Time('-2 hours');
+        $rate->modified = $time;
+        $this->Table->save($rate);
+
         $amount = 20.00;
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
@@ -304,6 +310,11 @@ class CurrencyConverterHelperTest extends TestCase {
 
     public function testRateUsingDatabaseWhenRateExistInDatabaseAndNoNeedToBeUpdated()
     {
+        $rate = $this->Table->find('all')->first();
+        $time = new Time('-2 hours');
+        $rate->modified = $time;
+        $this->Table->save($rate);
+
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
@@ -402,14 +413,5 @@ class CurrencyConverterHelperTest extends TestCase {
 
         $result = count($this->Table->find('all')->toArray());
         $this->assertEquals(1, $result);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        // Nettoie la Table
-        TableRegistry::clear();
-        // Nettoie les variables quand les tests sont finis.
-		unset($this->CurrencyConverter);
     }
 }
