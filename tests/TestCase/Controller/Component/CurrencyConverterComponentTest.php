@@ -12,12 +12,7 @@ use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
 
 /**
- *
- *
- * BEFORE TESTTING MAKE SURE
- * TO WRITE CURRENT DATETIME INTO THE FIRST RECORDS OF CurrencyratesFixture in tests/Fixture/CurrencyratesFixture
- *
- *
+ * CurrencyConverterComponent Test.
  */
 class CurrencyConverterComponentTest extends TestCase
 {
@@ -34,39 +29,50 @@ class CurrencyConverterComponentTest extends TestCase
     /**
      * @var \Cake\Http\ServerRequest
      */
-    protected $request;
+    protected $Request;
 
     /**
      * @var \Cake\Http\Response
      */
-    protected $response;
+    protected $Response;
 
      /**
      * @var \Cake\Controller\Controller
      */
-    protected $controller;
+    protected $Controller;
 
     /**
      * @var \Cake\Controller\ComponentRegistry
      */
-    protected $registry;
+    protected $Registry;
 
     /**
      * @var \Cake\ORM\Table
      */
     protected $Table;
 
+    /**
+     * @return void
+     */
     public function setUp()
     {
-        // Configuration de notre component et de notre faux controller de test.
         $this->Request = new ServerRequest();
         $this->Response = new Response();
         $this->Controller = new Controller($this->Request, $this->Response);
-        $this->Registry = new ComponentRegistry($this->Controller);
+        $this->Registry = new ComponentRegistry();
+        $this->Registry->setController($this->Controller);
         $this->CurrencyConverter = new CurrencyConverterComponent($this->Registry, []);
 
         $table = TableRegistry::get('Currencyrates');
         $this->Table = $table;
+    }
+
+    /**
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
     }
 
     public function testConfig()
@@ -188,6 +194,11 @@ class CurrencyConverterComponentTest extends TestCase
 
     public function testConvertUsingDatabaseWhenRateExistInDatabaseAndNoNeedToBeUpdated()
     {
+        $rate = $this->Table->find('all')->first();
+        $time = new Time('-2 hours');
+        $rate->modified = $time;
+        $this->Table->save($rate);
+
         $amount = 20.00;
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
@@ -313,6 +324,11 @@ class CurrencyConverterComponentTest extends TestCase
 
     public function testRateUsingDatabaseWhenRateExistInDatabaseAndNoNeedToBeUpdated()
     {
+        $rate = $this->Table->find('all')->first();
+        $time = new Time('-2 hours');
+        $rate->modified = $time;
+        $this->Table->save($rate);
+
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
@@ -411,14 +427,5 @@ class CurrencyConverterComponentTest extends TestCase
 
         $result = count($this->Table->find('all')->toArray());
         $this->assertEquals(1, $result);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        // Nettoie la Table
-        TableRegistry::clear();
-        // Nettoie les variables quand les tests sont finis.
-        unset($this->Controller, $this->CurrencyConverter);
     }
 }

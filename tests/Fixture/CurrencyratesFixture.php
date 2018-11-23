@@ -24,8 +24,8 @@ class CurrencyratesFixture extends TestFixture {
             'from_currency' => 'EUR',
             'to_currency' => 'GBP',
             'rate' => 0.8,
-            'created' => '2018-11-01 14:28:00',
-            'modified' => '2018-11-01 14:28:00'
+            'created' => '2018-11-01 12:00:00',
+            'modified' => '2018-11-01 12:00:00'
         ],
     ];
 }
