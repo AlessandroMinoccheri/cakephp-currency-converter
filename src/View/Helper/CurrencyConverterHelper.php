@@ -67,11 +67,14 @@ class CurrencyConverterHelper extends Helper
      * @var array
      */
     protected $_defaultConfig = [
-        'database' => true, // Mention if Component have to store currency rate in database
-        'refresh' => 24, // Time interval for Component to refresh currency rate in database
-        'decimal' => 2, // Number of decimal to use when formatting amount float number
-        'round' => false, // Number to divise 1 and get the sup step to round price to (eg: 4 for 0.25 step)
+        'database' => true,
+        'refresh' => 24,
+        'decimal' => 2,
+        'round' => false,
+        'apikey' => '',
     ];
+
+    private $apiKey;
 
     /**
      * @param array $config
@@ -82,6 +85,7 @@ class CurrencyConverterHelper extends Helper
         $this->refresh = $this->getConfig('refresh');
         $this->decimal = $this->getConfig('decimal');
         $this->round = ($this->getConfig('round') !== 0 ? $this->getConfig('round') : false);
+        $this->apiKey = $this->getConfig('apikey');
 
         $this->session = $this->request->getSession();
         $this->currencyratesTable = TableRegistry::get('CurrencyConverter.Currencyrates');
@@ -97,6 +101,10 @@ class CurrencyConverterHelper extends Helper
      */
     public function convert($amount, $from, $to)
     {
+        if (!$this->apiKey) {
+            throw new \Exception('Api Key not found');
+        }
+
         $amount = floatval($amount);
         $rate = $this->_getRateToUse($from, $to);
 
@@ -251,7 +259,7 @@ class CurrencyConverterHelper extends Helper
     {
         $rate = null;
 
-        $url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $from . '_' . $to . '&compact=ultra';
+        $url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $from . '_' . $to . '&compact=ultra&apiKey=' . $this->apiKey;
         $request = @fopen($url, 'r');
         if ($request) {
             $response = fgets($request, 4096);

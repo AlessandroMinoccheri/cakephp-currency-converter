@@ -82,7 +82,8 @@ class CurrencyConverterComponentTest extends TestCase
             'database' => 2,
             'refresh' => 24,
             'decimal' => 2,
-            'round' => false
+            'round' => false,
+            'apikey' => 'foo'
         ];
         $this->assertEquals($expected, $this->CurrencyConverter->getConfig());
     }
