@@ -1,5 +1,5 @@
 tmp/*
-/composer.lock
 /vendor
 /tests/coverage
 /web
+phpunit.xml

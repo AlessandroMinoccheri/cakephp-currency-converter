@@ -4,6 +4,7 @@ namespace CurrencyConverter\View\Helper;
 use Cake\View\Helper;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+use CurrencyConverter\CurrencyConverter;
 
 /**
  * @property \Cake\View\Helper\HtmlHelper $Html
@@ -75,6 +76,7 @@ class CurrencyConverterHelper extends Helper
     ];
 
     private $apiKey;
+    private $currencyConverter;
 
     /**
      * @param array $config
@@ -87,7 +89,9 @@ class CurrencyConverterHelper extends Helper
         $this->round = ($this->getConfig('round') !== 0 ? $this->getConfig('round') : false);
         $this->apiKey = $this->getConfig('apikey');
 
-        $this->session = $this->request->getSession();
+        $this->currencyConverter = new CurrencyConverter($this->apiKey);
+
+        $this->session = $this->getView()->getRequest()->getSession();
         $this->currencyratesTable = TableRegistry::get('CurrencyConverter.Currencyrates');
     }
 
@@ -101,7 +105,7 @@ class CurrencyConverterHelper extends Helper
      */
     public function convert($amount, $from, $to)
     {
-        if (!$this->apiKey) {
+        if (!isset($this->apiKey)) {
             throw new \Exception('Api Key not found');
         }
 
@@ -257,19 +261,11 @@ class CurrencyConverterHelper extends Helper
      */
     private function _getRateFromAPI($from, $to)
     {
-        $rate = null;
+        return $this->currencyConverter->getRates($from, $to);
+    }
 
-        $url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $from . '_' . $to . '&compact=ultra&apiKey=' . $this->apiKey;
-        $request = @fopen($url, 'r');
-        if ($request) {
-            $response = fgets($request, 4096);
-            fclose($request);
-            $response = json_decode($response, true);
-            if (isset($response[$from . '_' . $to])) {
-                $rate = $response[$from . '_' . $to];
-            }
-        }
-        
-        return $rate;
+    public function setCurrencyConverter(CurrencyConverter $currencyConverter)
+    {
+        $this->currencyConverter = $currencyConverter;
     }
 }

@@ -27,6 +27,10 @@ Cake\Core\Configure::write('App', [
     'encoding' => 'UTF-8'
 ]);
 
+Cake\Core\Configure::write('Error', [
+    'errorLevel' => 'E_ALL & ~E_USER_DEPRECATED'
+]);
+
 Cake\Core\Configure::write('debug', true);
 
 mb_internal_encoding('UTF-8');

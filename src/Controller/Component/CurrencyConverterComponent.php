@@ -6,6 +6,7 @@ use Cake\Controller\Component;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+use CurrencyConverter\CurrencyConverter;
 
 /**
  * CurrencyConverter Component to convert currency.
@@ -80,6 +81,8 @@ class CurrencyConverterComponent extends Component
 
     private $apiKey;
 
+    private $currencyConverter;
+
     /**
      * @param array $config
      * @return void
@@ -94,6 +97,7 @@ class CurrencyConverterComponent extends Component
 
         $this->session = $this->request->getSession();
         $this->currencyratesTable = TableRegistry::get('CurrencyConverter.Currencyrates');
+        $this->currencyConverter = new CurrencyConverter($this->apiKey);
     }
 
     /**
@@ -106,14 +110,14 @@ class CurrencyConverterComponent extends Component
      */
     public function convert($amount, $from, $to)
     {
-        if (!$this->apiKey) {
+        if (!isset($this->apiKey)) {
             throw new \Exception('Api Key not found');
         }
 
         $amount = floatval($amount);
         $rate = $this->_getRateToUse($from, $to);
 
-        return $convert = $this->_formatConvert($rate * $amount);
+        return $this->_formatConvert($rate * $amount);
     }
 
     /**
@@ -264,17 +268,11 @@ class CurrencyConverterComponent extends Component
     {
         $rate = null;
 
-        $url = 'https://free.currencyconverterapi.com/api/v5/convert?q=' . $from . '_' . $to . '&compact=ultra&apiKey=' . $this->apiKey;
-        $request = @fopen($url, 'r');
-        if ($request) {
-            $response = fgets($request, 4096);
-            fclose($request);
-            $response = json_decode($response, true);
-            if (isset($response[$from . '_' . $to])) {
-                $rate = $response[$from . '_' . $to];
-            }
-        }
+        return $this->currencyConverter->getRates($from, $to);
+    }
 
-        return $rate;
+    public function setCurrencyConverter(CurrencyConverter $currencyConverter)
+    {
+        $this->currencyConverter = $currencyConverter;
     }
 }
