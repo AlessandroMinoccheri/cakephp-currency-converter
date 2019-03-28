@@ -6,6 +6,7 @@ use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use CurrencyConverter\CurrencyConverter;
 use CurrencyConverter\View\Helper\CurrencyConverterHelper;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
@@ -68,7 +69,8 @@ class CurrencyConverterHelperTest extends TestCase {
             'database' => true,
             'refresh' => 24,
             'decimal' => 2,
-            'round' => false
+            'round' => false,
+            'apikey' => ''
         ];
         $this->assertEquals($expected, $this->CurrencyConverter->getConfig());
     }
@@ -164,6 +166,10 @@ class CurrencyConverterHelperTest extends TestCase {
         $fromCurrency = 'EUR';
         $toCurrency = 'USD';
 
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
         $rate = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->rate;
         $expected = round(number_format($rate * 20.00, 2), 2);
@@ -171,10 +177,6 @@ class CurrencyConverterHelperTest extends TestCase {
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-USD')['rate'];
         $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->rate;
-        $this->assertEquals($expected, $result);
-
-        $result = $this->Request->getSession()->read('CurrencyConverter.EUR-USD')['modified'];
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->get('modified')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -211,6 +213,11 @@ class CurrencyConverterHelperTest extends TestCase {
         $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'refresh' => 0
         ]);
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
         $rate = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
         $expected = round(number_format($rate * 20.00, 2), 2);
@@ -231,6 +238,10 @@ class CurrencyConverterHelperTest extends TestCase {
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $now = Time::now()->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->Request->getSession()->write('CurrencyConverter.EUR-GBP', [
             'rate' => 0.15,
@@ -247,10 +258,15 @@ class CurrencyConverterHelperTest extends TestCase {
         $amount = 20.00;
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
+        $rate = 10;
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn($rate);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
 
         $expiredDatetime = Time::now()->modify('-5 days')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->Request->getSession()->write('CurrencyConverter.EUR-GBP', [
-            'rate' => 0.1,
+            'rate' => 0,
             'modified' => $expiredDatetime
         ]);
 
@@ -259,8 +275,7 @@ class CurrencyConverterHelperTest extends TestCase {
         $this->Table->save($entity);
 
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
-        $rate = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
-        $expected = number_format($rate * 20.00, 2);
+        $expected = $rate * 20.00;
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-GBP.rate');
@@ -281,9 +296,18 @@ class CurrencyConverterHelperTest extends TestCase {
         $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'database' => false
         ]);
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(10);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $result = $this->CurrencyConverter->convert($amount, $fromCurrency, $toCurrency);
 
-        $this->assertGreaterThan(20, $result);
+        $this->assertGreaterThan($amount, $result);
 
         $result = count($this->Table->find('all')->toArray());
         $this->assertEquals(1, $result);
@@ -295,16 +319,16 @@ class CurrencyConverterHelperTest extends TestCase {
         $fromCurrency = 'EUR';
         $toCurrency = 'USD';
 
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
         $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->rate;
         $this->assertEquals($expected, $result);
 
         $result = $this->Request->getSession()->read('CurrencyConverter.EUR-USD')['rate'];
         $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->rate;
-        $this->assertEquals($expected, $result);
-
-        $result = $this->Request->getSession()->read('CurrencyConverter.EUR-USD')['modified'];
-        $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'USD'])->first()->modified->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->assertEquals($expected, $result);
     }
 
@@ -317,6 +341,10 @@ class CurrencyConverterHelperTest extends TestCase {
 
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
 
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
         $expected = 0.8;
@@ -339,6 +367,11 @@ class CurrencyConverterHelperTest extends TestCase {
         $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'refresh' => 0
         ]);
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
         $expected = $this->Table->find('all')->where(['from_currency' => 'EUR', 'to_currency' => 'GBP'])->first()->rate;
         $this->assertEquals($expected, $result);
@@ -358,6 +391,10 @@ class CurrencyConverterHelperTest extends TestCase {
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
 
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $now = Time::now()->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->Request->getSession()->write('CurrencyConverter.EUR-GBP', [
             'rate' => 0.15,
@@ -374,6 +411,10 @@ class CurrencyConverterHelperTest extends TestCase {
         $amount = 20.00;
         $fromCurrency = 'EUR';
         $toCurrency = 'GBP';
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
 
         $expired = Time::now()->modify('-5 days')->i18nFormat('yyyy-MM-dd HH:mm:ss');
         $this->Request->getSession()->write('CurrencyConverter.EUR-GBP', [
@@ -407,6 +448,11 @@ class CurrencyConverterHelperTest extends TestCase {
         $this->CurrencyConverter = new CurrencyConverterHelper($this->View, [
             'database' => false
         ]);
+
+        $currencyConverterMock = $this->prophesize(CurrencyConverter::class);
+        $currencyConverterMock->getRates($fromCurrency, $toCurrency)->willReturn(1000);
+        $this->CurrencyConverter->setCurrencyConverter($currencyConverterMock->reveal());
+
         $result = $this->CurrencyConverter->rate($fromCurrency, $toCurrency);
 
         $this->assertGreaterThan(1, $result);

@@ -1,0 +1,11 @@
+version: "2"
+services:
+  php:
+    container_name: php
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    ports:
+      - 81:80
+    volumes:
+      - .:/var/www/html
